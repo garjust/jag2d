@@ -1,17 +1,7 @@
 package garjust.jag2d.geometry.vector;
 
-import garjust.jag2d.geometry.Drawable;
-import garjust.jag2d.geometry.point.Point;
-import garjust.jag2d.geometry.point.ReadablePoint;
+import garjust.jag2d.geometry.CartesianCoordinate;
 import garjust.jag2d.util.FloatMath;
-import garjust.jag2d.util.GraphicsConfig;
-
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
@@ -24,25 +14,15 @@ import lombok.experimental.Accessors;
  * return new vectors
  */
 @Accessors(fluent = true)
-@Data
-@AllArgsConstructor
-public class Vector implements Drawable, ReadableVector, MoveableVector, CopyableVector {
+public class Vector extends CartesianCoordinate<Vector> implements ReadableVector, MoveableVector, CopyableVector {
 
     public static final ReadableVector ZERO = new Vector(0, 0);
     public static final ReadableVector X_UNIT_VECTOR = new Vector(1, 0);
     public static final ReadableVector Y_UNIT_VECTOR = new Vector(0, 1);
     public static final ReadableVector DIAGONAL_VECTOR = new Vector(1, 1).unit();
-    private float x;
-    private float y;
 
-    @Override
-    public int snappedX() {
-        return Math.round(x);
-    }
-
-    @Override
-    public int snappedY() {
-        return Math.round(y);
+    public Vector(final float x, final float y) {
+        super(x, y);
     }
 
     @Override
@@ -53,28 +33,6 @@ public class Vector implements Drawable, ReadableVector, MoveableVector, Copyabl
     @Override
     public float angle() {
         return x == 0 && y == 0 ? 0 : FloatMath.acos(x / length());
-    }
-
-    @Override
-    public Vector rotate(final float theta) {
-        final float tempX = x;
-        x = x * FloatMath.cos(theta) - y * FloatMath.sin(theta);
-        y = tempX * FloatMath.sin(theta) + y * FloatMath.cos(theta);
-        return this;
-    }
-
-    @Override
-    public Vector scale(final float scalar) {
-        this.x *= scalar;
-        this.y *= scalar;
-        return this;
-    }
-
-    @Override
-    public Vector translate(final float x, final float y) {
-        this.x += x;
-        this.y += y;
-        return this;
     }
 
     @Override
@@ -122,36 +80,6 @@ public class Vector implements Drawable, ReadableVector, MoveableVector, Copyabl
 
     public static Vector pointToPointVector(final ReadableVector vector1, final ReadableVector vector2) {
         return subtract(vector2, vector1);
-    }
-
-    @Override
-    public void draw(final Graphics2D graphics) {
-        draw(graphics, Color.RED, Point.ZERO);
-    }
-
-    @Override
-    public void draw(final Graphics2D graphics, final Color colour) {
-        draw(graphics, colour, Point.ZERO);
-    }
-
-    @Override
-    public void draw(final Graphics2D graphics, final Color colour, final ReadablePoint location) {
-        final GraphicsConfig graphics_config = new GraphicsConfig(graphics);
-        graphics.setColor(java.awt.Color.WHITE);
-        graphics.setStroke(new BasicStroke(1));
-        graphics.drawLine(location.snappedX(), location.snappedY(), location.snappedX() + snappedX(),
-                location.snappedY() + snappedY());
-        graphics.setStroke(new BasicStroke(2));
-        graphics.drawRect(location.snappedX(), location.snappedY(), 1, 1);
-        graphics.setColor(colour);
-        graphics.setStroke(new BasicStroke(4));
-        graphics.drawRect(location.snappedX() + snappedX(), location.snappedY() + snappedY(), 1, 1);
-        graphics_config.set(graphics);
-    }
-
-    public float[] toArray() {
-        final float[] vector = { x, y };
-        return vector;
     }
 
     @Override
