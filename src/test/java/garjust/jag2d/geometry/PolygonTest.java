@@ -1,10 +1,10 @@
 package garjust.jag2d.geometry;
 
 import garjust.jag2d.collision.BoundingBox;
-import garjust.jag2d.geometry.Point;
-import garjust.jag2d.geometry.Polygon;
-import garjust.jag2d.geometry.ReadOnlyPolygon;
-import garjust.jag2d.geometry.util.PointList;
+import garjust.jag2d.geometry.point.Point;
+import garjust.jag2d.geometry.point.PointList;
+import garjust.jag2d.geometry.polygon.Polygon;
+import garjust.jag2d.geometry.polygon.ReadablePolygon;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,8 +33,8 @@ public class PolygonTest {
 
     @Test
     public void testCopyConstructor() {
-        final ReadOnlyPolygon polygon = new Polygon(polygon1);
-        final ReadOnlyPolygon copy = new Polygon(polygon);
+        final ReadablePolygon polygon = new Polygon(polygon1);
+        final ReadablePolygon copy = new Polygon(polygon);
         assert (polygon != copy);
         assert (polygon.vertices() != copy.vertices());
         assert (polygon.centre() != copy.centre());
@@ -108,7 +108,7 @@ public class PolygonTest {
 
     @Test
     public void testScale() {
-        final ReadOnlyPolygon result = new Polygon(polygon2).scale(2);
+        final ReadablePolygon result = new Polygon(polygon2).scale(2);
         final PointList expected = new PointList(3);
         expected.add(new Point(3.666666667f, 8));
         expected.add(new Point(11.6666667f, 6));
@@ -120,7 +120,7 @@ public class PolygonTest {
 
     @Test
     public void testTranslate() {
-        final ReadOnlyPolygon result = new Polygon(polygon2).translate(3, 6);
+        final ReadablePolygon result = new Polygon(polygon2).translate(3, 6);
         final PointList expected = new PointList(3);
         expected.add(new Point(6, 11));
         expected.add(new Point(10, 10));

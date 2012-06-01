@@ -4,8 +4,8 @@
  */
 package garjust.jag2d.geometry.util;
 
-import garjust.jag2d.geometry.Point;
-import garjust.jag2d.geometry.util.PointList;
+import garjust.jag2d.geometry.point.Point;
+import garjust.jag2d.geometry.point.PointList;
 
 import org.junit.Test;
 import static org.junit.Assert.*;

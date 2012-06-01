@@ -1,9 +1,9 @@
 package garjust.jag2d.geometry;
 
 import garjust.jag2d.collision.BoundingBox;
-import garjust.jag2d.geometry.Point;
-import garjust.jag2d.geometry.ReadOnlyRectangle;
-import garjust.jag2d.geometry.Rectangle;
+import garjust.jag2d.geometry.point.Point;
+import garjust.jag2d.geometry.rectangle.ReadableRectangle;
+import garjust.jag2d.geometry.rectangle.Rectangle;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -76,8 +76,8 @@ public class RectangleTest {
 
     @Test
     public void testScale() {
-        final ReadOnlyRectangle expected = new Rectangle(0, 10, 40, 40);
-        final ReadOnlyRectangle result = new Rectangle(0, 10, 4, 4).scale(10);
+        final ReadableRectangle expected = new Rectangle(0, 10, 40, 40);
+        final ReadableRectangle result = new Rectangle(0, 10, 4, 4).scale(10);
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
         assertEquals(expected.w(), result.w(), 0.001);
@@ -86,8 +86,8 @@ public class RectangleTest {
 
     @Test
     public void testTranslate() {
-        final ReadOnlyRectangle expected = new Rectangle(3, 11, 20, 20);
-        final ReadOnlyRectangle result = new Rectangle(0, 5, 20, 20).translate(3, 6);
+        final ReadableRectangle expected = new Rectangle(3, 11, 20, 20);
+        final ReadableRectangle result = new Rectangle(0, 5, 20, 20).translate(3, 6);
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
         assertEquals(expected.w(), result.w(), 0.001);

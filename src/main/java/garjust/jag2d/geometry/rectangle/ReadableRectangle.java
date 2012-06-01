@@ -1,4 +1,4 @@
-package garjust.jag2d.geometry;
+package garjust.jag2d.geometry.rectangle;
 
 import java.awt.Graphics2D;
 
@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
  *
  * @author jagarbut
  */
-public interface ReadOnlyRectangle {
+public interface ReadableRectangle {
 
     public int x();
 

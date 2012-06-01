@@ -1,8 +1,8 @@
 package garjust.jag2d.geometry;
 
-import garjust.jag2d.geometry.ReadOnlyPoint;
-import garjust.jag2d.geometry.ReadOnlyVector;
-import garjust.jag2d.geometry.Vector;
+import garjust.jag2d.geometry.point.ReadablePoint;
+import garjust.jag2d.geometry.vector.ReadableVector;
+import garjust.jag2d.geometry.vector.Vector;
 import garjust.jag2d.util.FloatMath;
 
 import org.junit.Test;
@@ -68,21 +68,21 @@ public class VectorTest {
     @Test
     public void testGetSnappedX() {
         final int expected = 15;
-        final int result = new Vector(15.3f, 30.5f).getSnappedX();
+        final int result = new Vector(15.3f, 30.5f).snappedX();
         assertEquals(expected, result);
     }
 
     @Test
     public void testGetSnappedY() {
         final int expected = 31;
-        final int result = new Vector(15.3f, 30.5f).getSnappedY();
+        final int result = new Vector(15.3f, 30.5f).snappedY();
         assertEquals(expected, result);
     }
 
     @Test
     public void testSet() {
-        final ReadOnlyVector expected = new Vector(5, 6);
-        final ReadOnlyVector result = new Vector(3, 4).set(5, 6);
+        final ReadableVector expected = new Vector(5, 6);
+        final ReadableVector result = new Vector(3, 4).set(5, 6);
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
@@ -101,68 +101,68 @@ public class VectorTest {
 
     @Test
     public void testRotate() {
-        final ReadOnlyVector expected = new Vector(0, 5);
-        final ReadOnlyVector result = new Vector(5, 0).rotate(FloatMath.PI / 2);
+        final ReadableVector expected = new Vector(0, 5);
+        final ReadableVector result = new Vector(5, 0).rotate(FloatMath.PI / 2);
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
 
     @Test
     public void testScale() {
-        final ReadOnlyVector expected = new Vector(0, 10);
-        final ReadOnlyVector result = new Vector(0, 1).scale(10);
+        final ReadableVector expected = new Vector(0, 10);
+        final ReadableVector result = new Vector(0, 1).scale(10);
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
 
     @Test
     public void testTranslate() {
-        final ReadOnlyVector expected = new Vector(3, 8);
-        final ReadOnlyVector result = new Vector(0, 5).translate(3, 3);
+        final ReadableVector expected = new Vector(3, 8);
+        final ReadableVector result = new Vector(0, 5).translate(3, 3);
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
 
     @Test
     public void testLength_float() {
-        final ReadOnlyVector expected = new Vector(5, 0);
-        final ReadOnlyVector result = new Vector(1, 0).length(5);
+        final ReadableVector expected = new Vector(5, 0);
+        final ReadableVector result = new Vector(1, 0).length(5);
         assertEquals(5, result.length(), 0.001);
         assertEquals(expected.angle(), result.angle(), 0.001);
-        final ReadOnlyVector expected2 = new Vector(35, 26);
-        final ReadOnlyVector result2 = new Vector(35, 26).length(5);
+        final ReadableVector expected2 = new Vector(35, 26);
+        final ReadableVector result2 = new Vector(35, 26).length(5);
         assertEquals(5, result2.length(), 0.001);
         assertEquals(expected2.angle(), result2.angle(), 0.001);
     }
 
     @Test
     public void testSnap() {
-        final ReadOnlyVector expected = new Vector(4, 8);
-        final ReadOnlyVector result = new Vector(3.9f, 8.4f).snap();
+        final ReadableVector expected = new Vector(4, 8);
+        final ReadableVector result = new Vector(3.9f, 8.4f).snap();
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
 
     @Test
     public void testNegate() {
-        final ReadOnlyVector expected = new Vector(-15, 3);
-        final ReadOnlyVector result = new Vector(15, -3).negate();
+        final ReadableVector expected = new Vector(-15, 3);
+        final ReadableVector result = new Vector(15, -3).negate();
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
 
     @Test
     public void testUnit() {
-        final ReadOnlyVector expected = new Vector(1, 0);
-        final ReadOnlyVector result = new Vector(55, 0).unit();
+        final ReadableVector expected = new Vector(1, 0);
+        final ReadableVector result = new Vector(55, 0).unit();
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
 
     @Test
     public void testNormal() {
-        final ReadOnlyVector expected = new Vector(-3, 8);
-        final ReadOnlyVector result = new Vector(8, 3).normal();
+        final ReadableVector expected = new Vector(-3, 8);
+        final ReadableVector result = new Vector(8, 3).normal();
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
@@ -183,12 +183,12 @@ public class VectorTest {
 
     @Test
     public void testAdd() {
-        final ReadOnlyVector result = Vector.add(new Vector(5, 4), new Vector(3, 2));
-        final ReadOnlyVector expected = new Vector(8, 6);
+        final ReadableVector result = Vector.add(new Vector(5, 4), new Vector(3, 2));
+        final ReadableVector expected = new Vector(8, 6);
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
-        final ReadOnlyVector result2 = Vector.add(new Vector(5, 4), new Vector(-3, 2));
-        final ReadOnlyVector expected2 = new Vector(2, 6);
+        final ReadableVector result2 = Vector.add(new Vector(5, 4), new Vector(-3, 2));
+        final ReadableVector expected2 = new Vector(2, 6);
         assertEquals(expected2.x(), result2.x(), 0.001);
         assertEquals(expected2.y(), result2.y(), 0.001);
     }
@@ -212,10 +212,10 @@ public class VectorTest {
     
     @Test
     public void testEquals() {
-        ReadOnlyVector vector = new Vector(7, 2);
-        ReadOnlyVector vector_copy = vector;
-        ReadOnlyVector vector_same = new Vector(7, 2);
-        ReadOnlyVector vector_diff = new Vector(7.2f, 3);
+        ReadableVector vector = new Vector(7, 2);
+        ReadableVector vector_copy = vector;
+        ReadableVector vector_same = new Vector(7, 2);
+        ReadableVector vector_diff = new Vector(7.2f, 3);
         assert (vector.equals(vector_copy));
         assert (vector.equals(vector_same));
         assert (!vector.equals(vector_diff));
@@ -230,7 +230,7 @@ public class VectorTest {
 
     @Test
     public void testToPoint() {
-        final ReadOnlyPoint point = new Vector(1, 2).toPoint();
+        final ReadablePoint point = new Vector(1, 2).toPoint();
         assertEquals(1, point.x(), 0.001);
         assertEquals(2, point.y(), 0.001);
     }

@@ -1,13 +1,12 @@
-package garjust.jag2d.geometry;
+package garjust.jag2d.geometry.rectangle;
 
 import garjust.jag2d.collision.BoundingBox;
 import garjust.jag2d.collision.Collidable;
+import garjust.jag2d.geometry.Drawable;
+import garjust.jag2d.geometry.Geometry;
+import garjust.jag2d.geometry.point.ReadablePoint;
 
-/**
- *
- * @author Justin Garbutt
- */
-public final class Rectangle implements Collidable, Drawable, Geometry, ReadOnlyRectangle, WriteOnlyRectangle, MoveOnlyRectangle {
+public final class Rectangle implements Collidable, Drawable, Geometry, ReadableRectangle, MoveableRectangle {
 
     private int x;
     private int y;
@@ -35,18 +34,22 @@ public final class Rectangle implements Collidable, Drawable, Geometry, ReadOnly
         this.h = rectangle.h;
     }
 
+    @Override
     public final int x() {
         return x;
     }
 
+    @Override
     public final int y() {
         return y;
     }
 
+    @Override
     public final int w() {
         return w;
     }
 
+    @Override
     public final int h() {
         return h;
     }
@@ -83,32 +86,38 @@ public final class Rectangle implements Collidable, Drawable, Geometry, ReadOnly
         return this;
     }
 
+    @Override
     public Rectangle rotate(final float theta) {
         System.err.println("ERROR: Attempted to rotate axis aligned rectangle > " + toString());
         return this;
     }
 
-    public Rectangle rotate(final float theta, final ReadOnlyPoint position) {
+    @Override
+    public Rectangle rotate(final float theta, final ReadablePoint position) {
         System.err.println("ERROR: Attempted to rotate axis aligned rectangle > " + toString());
         return this;
     }
 
+    @Override
     public Rectangle scale(final float scalar) {
         this.h *= scalar;
         this.w *= scalar;
         return this;
     }
 
+    @Override
     public Rectangle translate(final float x, final float y) {
         this.x += x;
         this.y += y;
         return this;
     }
 
+    @Override
     public BoundingBox bound() {
         return new BoundingBox(this);
     }
 
+    @Override
     public void draw(final java.awt.Graphics2D graphics) {
         graphics.drawRect(x, y, w, h);
     }

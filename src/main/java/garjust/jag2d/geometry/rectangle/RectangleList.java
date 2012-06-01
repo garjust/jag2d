@@ -1,19 +1,15 @@
-package garjust.jag2d.geometry.util;
-
-import garjust.jag2d.geometry.Rectangle;
+package garjust.jag2d.geometry.rectangle;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author Justin Garbutt
- */
 public class RectangleList extends ArrayList<Rectangle> {
-    
+
+    private static final long serialVersionUID = 1L;
+
     public RectangleList() {
         super();
     }
-    
+
     public RectangleList(final int size) {
         super(size);
     }

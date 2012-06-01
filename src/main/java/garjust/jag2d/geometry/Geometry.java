@@ -1,14 +1,10 @@
 package garjust.jag2d.geometry;
 
-/**
- *
- * @author Justin Garbutt
- */
 public interface Geometry {
 
-    public Geometry rotate(final float theta);
+    public <G> G rotate(final float theta);
 
-    public Geometry scale(final float scalar);
+    public <G> G scale(final float scalar);
 
-    public Geometry translate(final float x, final float y);
+    public <G> G translate(final float x, final float y);
 }

@@ -1,4 +1,4 @@
-package garjust.jag2d.geometry;
+package garjust.jag2d.geometry.point;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
  *
  * @author jagarbut
  */
-public interface ReadOnlyPoint {
+public interface ReadablePoint {
 
     public float x();
 

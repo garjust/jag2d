@@ -3,7 +3,7 @@ package garjust.jag2d.collision.spatialpartition;
 import garjust.jag2d.collision.BoundingBox;
 import garjust.jag2d.collision.Collidable;
 import garjust.jag2d.collision.util.CollidableList;
-import garjust.jag2d.geometry.Point;
+import garjust.jag2d.geometry.point.Point;
 
 /**
  *

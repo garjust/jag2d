@@ -1,14 +1,10 @@
-package garjust.jag2d.geometry.util;
-
-import garjust.jag2d.geometry.Circle;
+package garjust.jag2d.geometry.circle;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author Justin Garbutt
- */
 public class CircleList extends ArrayList<Circle> {
+
+    private static final long serialVersionUID = 1L;
 
     public CircleList() {
         super();

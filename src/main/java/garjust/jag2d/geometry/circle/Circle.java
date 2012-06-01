@@ -1,17 +1,15 @@
-package garjust.jag2d.geometry;
+package garjust.jag2d.geometry.circle;
 
 import garjust.jag2d.collision.BoundingBox;
 import garjust.jag2d.collision.Collidable;
-import garjust.jag2d.geometry.util.PointList;
+import garjust.jag2d.geometry.point.Point;
+import garjust.jag2d.geometry.point.PointList;
+import garjust.jag2d.geometry.polygon.Polygon;
 
-/**
- *
- * @author Justin Garbutt
- */
 public class Circle implements Collidable {
 
-    private Point center;
-    private int radius;
+    private final Point center;
+    private final int radius;
 
     public Circle(final Point center, final int radius) {
         this.center = new Point(center);
@@ -40,6 +38,7 @@ public class Circle implements Collidable {
         return new Polygon(vertices);
     }
 
+    @Override
     public BoundingBox bound() {
         return new BoundingBox(this);
     }

@@ -1,18 +1,24 @@
-package garjust.jag2d.geometry;
+package garjust.jag2d.geometry.polygon;
 
 import garjust.jag2d.collision.BoundingBox;
 import garjust.jag2d.collision.Collidable;
-import garjust.jag2d.geometry.util.PointList;
+import garjust.jag2d.geometry.Drawable;
+import garjust.jag2d.geometry.Geometry;
+import garjust.jag2d.geometry.point.MoveablePoint;
+import garjust.jag2d.geometry.point.Point;
+import garjust.jag2d.geometry.point.PointList;
+import garjust.jag2d.geometry.point.ReadablePoint;
+import garjust.jag2d.geometry.rectangle.ReadableRectangle;
 import garjust.jag2d.util.Sort;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 
 /**
- *
+ * 
  * @author Justin Garbutt
  */
-public class Polygon implements Collidable, Drawable, Geometry, ReadOnlyPolygon, WriteOnlyPolygon, MoveOnlyPolygon {
+public class Polygon implements Collidable, Drawable, Geometry, ReadablePolygon, MoveablePolygon {
 
     private PointList vertices;
     private Point centre;
@@ -32,15 +38,16 @@ public class Polygon implements Collidable, Drawable, Geometry, ReadOnlyPolygon,
 
     /**
      * COPY CONSTRUCTOR
-     * @param polygon 
+     * 
+     * @param polygon
      */
-    public Polygon(final ReadOnlyPolygon polygon) {
+    public Polygon(final ReadablePolygon polygon) {
         this.vertices = new PointList(polygon.vertices());
         this.centre = null;
         this.hull = null;
     }
 
-    public Polygon(final ReadOnlyRectangle rectangle) {
+    public Polygon(final ReadableRectangle rectangle) {
         this.vertices = new PointList(4);
         vertices.add(new Point(rectangle.x(), rectangle.y()));
         vertices.add(new Point(rectangle.x(), rectangle.y() + rectangle.h()));
@@ -50,10 +57,12 @@ public class Polygon implements Collidable, Drawable, Geometry, ReadOnlyPolygon,
         this.hull = null;
     }
 
+    @Override
     public final PointList vertices() {
         return new PointList(vertices);
     }
 
+    @Override
     public final Point centre() {
         if (centre == null) {
             float x_total = 0;
@@ -69,6 +78,7 @@ public class Polygon implements Collidable, Drawable, Geometry, ReadOnlyPolygon,
         return new Point(centre);
     }
 
+    @Override
     public final Polygon hull() {
         if (hull == null) {
             Point lowest_y = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -97,7 +107,9 @@ public class Polygon implements Collidable, Drawable, Geometry, ReadOnlyPolygon,
             the_hull.add(points[1]);
             int stack = 2;
             for (int i = 2; i < points.length; i++) {
-                while (ccw(the_hull.get(stack - 2), the_hull.get(stack - 1), points[i]) > 0) { // WHILE RIGHT TURN
+                while (ccw(the_hull.get(stack - 2), the_hull.get(stack - 1), points[i]) > 0) { // WHILE
+                                                                                               // RIGHT
+                                                                                               // TURN
                     the_hull.remove(stack - 1);
                     stack--;
                     if (stack == 1) {
@@ -133,10 +145,11 @@ public class Polygon implements Collidable, Drawable, Geometry, ReadOnlyPolygon,
     /**
      * 
      * @param theta
-     * @return 
+     * @return
      */
+    @Override
     public Polygon rotate(final float theta) {
-        for (MoveOnlyPoint vertex : vertices) {
+        for (MoveablePoint vertex : vertices) {
             vertex.rotate(theta);
         }
         if (hull != null) {
@@ -151,10 +164,11 @@ public class Polygon implements Collidable, Drawable, Geometry, ReadOnlyPolygon,
     /**
      * 
      * @param theta
-     * @return 
+     * @return
      */
-    public Polygon rotate(final float theta, final ReadOnlyPoint position) {
-        for (MoveOnlyPoint vertex : vertices) {
+    @Override
+    public Polygon rotate(final float theta, final ReadablePoint position) {
+        for (MoveablePoint vertex : vertices) {
             vertex.rotate(theta, position);
         }
         if (hull != null) {
@@ -166,9 +180,10 @@ public class Polygon implements Collidable, Drawable, Geometry, ReadOnlyPolygon,
         return this;
     }
 
+    @Override
     public Polygon scale(final float scalar) {
         centre();
-        for (MoveOnlyPoint vertex : vertices) {
+        for (MoveablePoint vertex : vertices) {
             vertex.translate(-1 * centre.x(), -1 * centre.y());
             vertex.scale(scalar);
             vertex.translate(centre.x(), centre.y());
@@ -178,8 +193,9 @@ public class Polygon implements Collidable, Drawable, Geometry, ReadOnlyPolygon,
         return this;
     }
 
+    @Override
     public Polygon translate(final float x, final float y) {
-        for (MoveOnlyPoint vertex : vertices) {
+        for (MoveablePoint vertex : vertices) {
             vertex.translate(x, y);
         }
         if (hull != null) {
@@ -191,6 +207,7 @@ public class Polygon implements Collidable, Drawable, Geometry, ReadOnlyPolygon,
         return this;
     }
 
+    @Override
     public void draw(final Graphics2D graphics) {
         draw(graphics, false);
     }
@@ -207,13 +224,14 @@ public class Polygon implements Collidable, Drawable, Geometry, ReadOnlyPolygon,
             graphics.setColor(color_save);
         }
         final int[][] coordinate_matrix = vertices.getCoordinateMatrix();
-        graphics.drawPolygon(coordinate_matrix[0], coordinate_matrix[1], vertices.size());       
+        graphics.drawPolygon(coordinate_matrix[0], coordinate_matrix[1], vertices.size());
     }
 
     /**
      * 
-     * @return 
+     * @return
      */
+    @Override
     public BoundingBox bound() {
         return new BoundingBox(this);
     }
@@ -252,7 +270,7 @@ public class Polygon implements Collidable, Drawable, Geometry, ReadOnlyPolygon,
         } else if (this.getClass() != other.getClass()) {
             return false;
         }
-        final ReadOnlyPolygon polygon = (Polygon) other;
+        final ReadablePolygon polygon = (Polygon) other;
         if (vertices.equals(polygon.vertices())) {
             return true;
         }
@@ -269,7 +287,7 @@ public class Polygon implements Collidable, Drawable, Geometry, ReadOnlyPolygon,
     @Override
     public String toString() {
         String polygon = "[Polygon:";
-        for (ReadOnlyPoint vertex : vertices) {
+        for (ReadablePoint vertex : vertices) {
             polygon += " " + vertex.toString();
         }
         return polygon + "]";

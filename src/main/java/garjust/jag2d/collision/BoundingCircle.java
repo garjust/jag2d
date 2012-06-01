@@ -1,11 +1,11 @@
 package garjust.jag2d.collision;
 
-import garjust.jag2d.geometry.Circle;
-import garjust.jag2d.geometry.Point;
-import garjust.jag2d.geometry.ReadOnlyPoint;
-import garjust.jag2d.geometry.ReadOnlyPolygon;
-import garjust.jag2d.geometry.ReadOnlyRectangle;
-import garjust.jag2d.geometry.ReadOnlyVector;
+import garjust.jag2d.geometry.circle.Circle;
+import garjust.jag2d.geometry.point.Point;
+import garjust.jag2d.geometry.point.ReadablePoint;
+import garjust.jag2d.geometry.polygon.ReadablePolygon;
+import garjust.jag2d.geometry.rectangle.ReadableRectangle;
+import garjust.jag2d.geometry.vector.ReadableVector;
 
 import java.awt.Color;
 
@@ -18,7 +18,7 @@ public class BoundingCircle implements BoundingGeometry {
     private final Point position;
     private final int radius;
 
-    public BoundingCircle(final ReadOnlyPoint position, final int radius) {
+    public BoundingCircle(final ReadablePoint position, final int radius) {
         this.position = new Point(position);
         this.radius = radius;
     }
@@ -30,17 +30,17 @@ public class BoundingCircle implements BoundingGeometry {
     }
 
     // TODO rounding makes small circles error prone
-    public BoundingCircle(final ReadOnlyRectangle rectangle) {
+    public BoundingCircle(final ReadableRectangle rectangle) {
         this.position = new Point(rectangle.x() + rectangle.w() / 2, rectangle.y() + rectangle.h() / 2);
         this.radius = (int) Math.sqrt(rectangle.w() + rectangle.h());
     }
 
     // TODO rounding makes small circles error prone
-    public BoundingCircle(final ReadOnlyPolygon polygon) {
+    public BoundingCircle(final ReadablePolygon polygon) {
         this.position = polygon.centre();
         float max = 0;
-        for (ReadOnlyPoint vertex : polygon.vertices()) {
-            final ReadOnlyVector vector = Point.pointToPointVector(position, vertex);
+        for (ReadablePoint vertex : polygon.vertices()) {
+            final ReadableVector vector = Point.pointToPointVector(position, vertex);
             final float length = vector.length();
             if (length > max) {
                 max = length;

@@ -2,8 +2,8 @@ package garjust.jag2d.collision.spatialpartition;
 
 import garjust.jag2d.collision.Collidable;
 import garjust.jag2d.collision.util.CollidableList;
-import garjust.jag2d.geometry.Point;
-import garjust.jag2d.geometry.util.RectangleList;
+import garjust.jag2d.geometry.point.Point;
+import garjust.jag2d.geometry.rectangle.RectangleList;
 import garjust.jag2d.window.WindowDimension;
 
 /**

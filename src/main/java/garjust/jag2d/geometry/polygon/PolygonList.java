@@ -1,19 +1,15 @@
-package garjust.jag2d.geometry.util;
-
-import garjust.jag2d.geometry.Polygon;
+package garjust.jag2d.geometry.polygon;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author Justin Garbutt
- */
 public class PolygonList extends ArrayList<Polygon> {
-        
+
+    private static final long serialVersionUID = 1L;
+
     public PolygonList() {
         super();
     }
-    
+
     public PolygonList(final int size) {
         super(size);
     }

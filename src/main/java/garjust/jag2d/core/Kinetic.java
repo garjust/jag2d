@@ -1,7 +1,7 @@
 package garjust.jag2d.core;
 
 import garjust.jag2d.geometry.Geometry;
-import garjust.jag2d.geometry.Point;
+import garjust.jag2d.geometry.point.Point;
 
 /**
  *

@@ -1,14 +1,15 @@
-package garjust.jag2d.geometry;
+package garjust.jag2d.geometry.point;
+
 
 /**
  *
  * @author jagarbut
  */
-public interface MoveOnlyPoint {
+public interface MoveablePoint {
 
     public Point rotate(final float theta);
 
-    public Point rotate(final float theta, final ReadOnlyPoint center);
+    public Point rotate(final float theta, final ReadablePoint center);
 
     public Point scale(final float scalar);
 

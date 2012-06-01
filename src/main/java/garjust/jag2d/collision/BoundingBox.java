@@ -1,9 +1,9 @@
 package garjust.jag2d.collision;
 
-import garjust.jag2d.geometry.Circle;
-import garjust.jag2d.geometry.Point;
-import garjust.jag2d.geometry.Polygon;
-import garjust.jag2d.geometry.Rectangle;
+import garjust.jag2d.geometry.circle.Circle;
+import garjust.jag2d.geometry.point.Point;
+import garjust.jag2d.geometry.polygon.Polygon;
+import garjust.jag2d.geometry.rectangle.Rectangle;
 
 import java.awt.Color;
 

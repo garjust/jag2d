@@ -1,9 +1,9 @@
 package garjust.jag2d.geometry;
 
-import garjust.jag2d.geometry.Point;
-import garjust.jag2d.geometry.ReadOnlyPoint;
-import garjust.jag2d.geometry.ReadOnlyVector;
-import garjust.jag2d.geometry.Vector;
+import garjust.jag2d.geometry.point.Point;
+import garjust.jag2d.geometry.point.ReadablePoint;
+import garjust.jag2d.geometry.vector.ReadableVector;
+import garjust.jag2d.geometry.vector.Vector;
 import garjust.jag2d.util.FloatMath;
 
 import org.junit.Test;
@@ -64,54 +64,54 @@ public class PointTest {
     @Test
     public void testGetSnappedY() {
         final int expected = 31;
-        final int result = new Vector(15.3f, 30.5f).getSnappedY();
+        final int result = new Vector(15.3f, 30.5f).snappedY();
         assertEquals(expected, result);
     }
 
     @Test
     public void testSet() {
-        final ReadOnlyPoint expected = new Point(5, 6);
-        final ReadOnlyPoint result = new Point(3, 4).set(5, 6);
+        final ReadablePoint expected = new Point(5, 6);
+        final ReadablePoint result = new Point(3, 4).set(5, 6);
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
 
     @Test
     public void testRotate() {
-        final ReadOnlyPoint expected = new Point(0, 5);
-        final ReadOnlyPoint result = new Point(5, 0).rotate(FloatMath.PI / 2);
+        final ReadablePoint expected = new Point(0, 5);
+        final ReadablePoint result = new Point(5, 0).rotate(FloatMath.PI / 2);
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
 
     @Test
     public void testRotate_point() {
-        final ReadOnlyPoint expected = new Point(0, 5);
-        final ReadOnlyPoint result = new Point(5, 0).rotate(FloatMath.PI / 2, Point.ZERO);
+        final ReadablePoint expected = new Point(0, 5);
+        final ReadablePoint result = new Point(5, 0).rotate(FloatMath.PI / 2, Point.ZERO);
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
 
     @Test
     public void testScale() {
-        final ReadOnlyPoint expected = new Point(0, 10);
-        final ReadOnlyPoint result = new Point(0, 1).scale(10);
+        final ReadablePoint expected = new Point(0, 10);
+        final ReadablePoint result = new Point(0, 1).scale(10);
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
 
     @Test
     public void testTranslate() {
-        final ReadOnlyPoint expected = new Point(3, 8);
-        final ReadOnlyPoint result = new Point(0, 5).translate(3, 3);
+        final ReadablePoint expected = new Point(3, 8);
+        final ReadablePoint result = new Point(0, 5).translate(3, 3);
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
 
     @Test
     public void testSnap() {
-        final ReadOnlyPoint expected = new Point(4, 8);
-        final ReadOnlyPoint result = new Point(3.9f, 8.4f).snap();
+        final ReadablePoint expected = new Point(4, 8);
+        final ReadablePoint result = new Point(3.9f, 8.4f).snap();
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
@@ -125,10 +125,10 @@ public class PointTest {
     
         @Test
     public void testEquals() {
-        ReadOnlyPoint point = new Point(7, 2);
-        ReadOnlyPoint point_copy = point;
-        ReadOnlyPoint point_same = new Point(7, 2);
-        ReadOnlyPoint point_diff = new Point(7.2f, 3);
+        ReadablePoint point = new Point(7, 2);
+        ReadablePoint point_copy = point;
+        ReadablePoint point_same = new Point(7, 2);
+        ReadablePoint point_diff = new Point(7.2f, 3);
         assert(point.equals(point_copy));
         assert(point.equals(point_same));
         assert(!point.equals(point_diff));
@@ -143,7 +143,7 @@ public class PointTest {
 
     @Test
     public void testToVector() {
-        final ReadOnlyVector vector = new Point(1, 2).toVector();
+        final ReadableVector vector = new Point(1, 2).toVector();
         assertEquals(1, vector.x(), 0.001);
         assertEquals(2, vector.y(), 0.001);
     }
