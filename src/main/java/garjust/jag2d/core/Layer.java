@@ -2,11 +2,7 @@ package garjust.jag2d.core;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author t_garbj
- */
-public class Layer<E extends Entity> extends ArrayList<E> {
+public class Layer extends EntityList {
 
     public Layer() {
         super();

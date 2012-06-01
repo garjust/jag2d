@@ -65,7 +65,7 @@ public class VectorTest {
     }
 
     @Test
-    public void testRotate() throws Exception {
+    public void shouldRotateVectors() throws Exception {
         Vector expectedVector = new Vector(1, 1);
         assertThat(quadrant1.rotate(1), is(expectedVector));
 
@@ -80,7 +80,7 @@ public class VectorTest {
     }
 
     @Test
-    public void testScale() throws Exception {
+    public void shouldScaleVectors() throws Exception {
         Vector expectedVector = new Vector(1, 1);
         assertThat(quadrant1.scale(1), is(expectedVector));
 
@@ -95,7 +95,7 @@ public class VectorTest {
     }
 
     @Test
-    public void testTranslate() throws Exception {
+    public void shouldTranslateVectors() throws Exception {
         Vector expectedVector = new Vector(1, 1);
         assertThat(quadrant1.translate(1, 1), is(expectedVector));
 
@@ -110,15 +110,18 @@ public class VectorTest {
     }
 
     @Test
-    public void testLength_float() throws Exception {
-        final ReadableVector expected = new Vector(5, 0);
-        final ReadableVector result = new Vector(1, 0).length(5);
-        assertEquals(5, result.length(), 0.001);
-        assertEquals(expected.angle(), result.angle(), 0.001);
-        final ReadableVector expected2 = new Vector(35, 26);
-        final ReadableVector result2 = new Vector(35, 26).length(5);
-        assertEquals(5, result2.length(), 0.001);
-        assertEquals(expected2.angle(), result2.angle(), 0.001);
+    public void shouldChangeTheMagnitudeOfVectors() throws Exception {
+        Vector expectedVector = new Vector(1, 1);
+        assertThat(quadrant1.translate(1, 1), is(expectedVector));
+
+        expectedVector = new Vector(1, 1);
+        assertThat(quadrant2.translate(1, 1), is(expectedVector));
+
+        expectedVector = new Vector(1, 1);
+        assertThat(quadrant3.translate(1, 1), is(expectedVector));
+
+        expectedVector = new Vector(1, 1);
+        assertThat(quadrant4.translate(1, 1), is(expectedVector));
     }
 
     @Test
@@ -130,7 +133,7 @@ public class VectorTest {
     }
 
     @Test
-    public void testNegate() throws Exception {
+    public void shouldNegateVectors() throws Exception {
         final ReadableVector expected = new Vector(-15, 3);
         final ReadableVector result = new Vector(15, -3).negate();
         assertEquals(expected.x(), result.x(), 0.001);

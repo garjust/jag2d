@@ -1,6 +1,7 @@
 bin/
 target/
 reports/
-.project
+
+.project/
 .classpath
 .settings

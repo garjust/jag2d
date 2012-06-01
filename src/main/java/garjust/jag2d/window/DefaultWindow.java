@@ -11,18 +11,13 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 
-/**
- * A basic window for graphics
- *
- * @author Justin
- */
 public class DefaultWindow extends Canvas {
 
     private final JFrame frame;
     private final BufferStrategy bufferStrategy;
     private final WindowDimension dimensions;
     private Graphics2D graphics;
-    // 
+
     private final DefaultKeyListener keylistener;
     private final DefaultMouseListener mouselistener;
     private final DefaultMouseMotionListener mousemotionlistener;
