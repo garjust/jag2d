@@ -1,7 +1,6 @@
 package garjust.jag2d.geometry.point;
 
 import garjust.jag2d.geometry.Drawable;
-import garjust.jag2d.geometry.Geometry;
 import garjust.jag2d.geometry.vector.Vector;
 import garjust.jag2d.util.FloatMath;
 import garjust.jag2d.util.GraphicsConfig;
@@ -10,50 +9,29 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Accessors(fluent = true)
 @Data
-public final class Point implements Drawable, Geometry, ReadablePoint, MoveablePoint {
+@AllArgsConstructor
+public class Point implements Drawable, ReadablePoint, MoveablePoint {
 
     public static final ReadablePoint ZERO = new Point(0, 0);
-    //
-    private float x;
-    private float y;
-
-    public Point() {
-        this.x = ZERO.x();
-        this.y = ZERO.y();
-    }
-
-    public Point(final float x, final float y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public Point(final ReadablePoint point) {
-        x = point.x();
-        y = point.y();
-    }
+    protected float x;
+    protected float y;
 
     @Override
-    public int getSnappedX() {
+    public int snappedX() {
         return Math.round(x);
     }
 
     @Override
-    public int getSnappedY() {
+    public int snappedY() {
         return Math.round(y);
     }
 
-    /**
-     * Rotates the point about 0
-     * 
-     * @param theta
-     *            Rotation angle
-     * @return This
-     */
     @Override
     public Point rotate(final float theta) {
         final float temp_x = x;
@@ -62,15 +40,6 @@ public final class Point implements Drawable, Geometry, ReadablePoint, MoveableP
         return this;
     }
 
-    /**
-     * Rotates the point about the point center
-     * 
-     * @param theta
-     *            Rotation angle
-     * @param center
-     *            Rotation point
-     * @return This
-     */
     @Override
     public Point rotate(final float theta, final ReadablePoint center) {
         Point centered = new Point(x - center.x(), y - center.y());
@@ -86,15 +55,6 @@ public final class Point implements Drawable, Geometry, ReadablePoint, MoveableP
         return this;
     }
 
-    /**
-     * Translates the point by x,y units
-     * 
-     * @param x
-     *            X units to translate
-     * @param y
-     *            Y units to translate
-     * @return This
-     */
     @Override
     public Point translate(final float x, final float y) {
         this.x += x;
@@ -102,23 +62,14 @@ public final class Point implements Drawable, Geometry, ReadablePoint, MoveableP
         return this;
     }
 
-    /**
-     * Returns a new point with rounded coordinates
-     * 
-     * @return Rounded point
-     */
     public Point snap() {
-        return new Point(Math.round(x), Math.round(y));
+        return new Point(snappedX(), snappedY());
     }
 
     public static Vector pointToPointVector(final ReadablePoint point1, final ReadablePoint point2) {
         return new Vector(point2.x() - point1.x(), point2.y() - point1.y());
     }
 
-    /**
-     * 
-     * @param graphics
-     */
     @Override
     public void draw(final Graphics2D graphics) {
         this.draw(graphics, java.awt.Color.RED);
@@ -129,7 +80,7 @@ public final class Point implements Drawable, Geometry, ReadablePoint, MoveableP
         final GraphicsConfig graphics_config = new GraphicsConfig(graphics);
         graphics.setColor(colour);
         graphics.setStroke(new BasicStroke(4));
-        graphics.drawRect(getSnappedX(), getSnappedY(), 1, 1);
+        graphics.drawRect(snappedX(), snappedY(), 1, 1);
         graphics_config.set(graphics);
     }
 
@@ -138,7 +89,8 @@ public final class Point implements Drawable, Geometry, ReadablePoint, MoveableP
         return point;
     }
 
-    public Vector toVector() {
-        return new Vector(x, y);
+    @Override
+    public Point copy() {
+        return new Point(x, y);
     }
 }

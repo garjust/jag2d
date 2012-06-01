@@ -2,6 +2,7 @@ package garjust.jag2d.core;
 
 import garjust.jag2d.geometry.point.Point;
 import garjust.jag2d.geometry.polygon.Polygon;
+import garjust.jag2d.geometry.vector.CopyableVector;
 import garjust.jag2d.geometry.vector.Vector;
 //
 import java.awt.Graphics2D;
@@ -41,7 +42,7 @@ public class PolygonEntity extends Polygon implements Entity {
         return new Point(position);
     }
     
-    public Vector velocity() {
+    public CopyableVector velocity() {
         return new Vector(velocity);
     }
     

@@ -8,7 +8,7 @@ import garjust.jag2d.geometry.rectangle.Rectangle;
 import java.awt.Color;
 
 /**
- *
+ * 
  * @author JAG-LAPTOP
  */
 public final class BoundingBox implements BoundingGeometry {
@@ -22,7 +22,7 @@ public final class BoundingBox implements BoundingGeometry {
 
     public BoundingBox(final Circle circle) {
         final Point center = circle.center();
-        final int radius = circle.radius();
+        final float radius = circle.radius();
         this.ul = new Point(center.translate(-1 * radius, -1 * radius));
         this.lr = new Point(center.translate(radius, radius));
     }
@@ -55,7 +55,9 @@ public final class BoundingBox implements BoundingGeometry {
 
     /**
      * Draws the bounding box [TESTING PURPOSES]
-     * @param graphics Graphics context for drawing
+     * 
+     * @param graphics
+     *            Graphics context for drawing
      */
     public void draw(final java.awt.Graphics2D graphics) {
         final Color color_save = graphics.getColor();
@@ -66,6 +68,7 @@ public final class BoundingBox implements BoundingGeometry {
 
     /**
      * Builds a rectangle from the bounding box
+     * 
      * @return A rectangle equal to this bounding box
      */
     public Rectangle toRectangle() {
@@ -85,12 +88,16 @@ public final class BoundingBox implements BoundingGeometry {
 
     /**
      * Tests for intersection between two bounding boxes
-     * @param box1 First bounding box
-     * @param box2 Second bounding box
+     * 
+     * @param box1
+     *            First bounding box
+     * @param box2
+     *            Second bounding box
      * @return True if the bounding boxes intersect
      */
     public static boolean intersection(final BoundingBox box1, final BoundingBox box2) {
-        if (box1.ul.x() > box2.lr.x() || box2.ul.x() > box1.lr.x() || box1.ul.y() > box2.lr.y() || box2.ul.y() > box1.lr.y()) {
+        if (box1.ul.x() > box2.lr.x() || box2.ul.x() > box1.lr.x() || box1.ul.y() > box2.lr.y()
+                || box2.ul.y() > box1.lr.y()) {
             return false;
         }
         return true;

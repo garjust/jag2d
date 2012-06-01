@@ -1,9 +1,5 @@
 package garjust.jag2d.geometry.circle;
 
-/**
- *
- * @author jagarbut
- */
-public interface MoveableCircle {
-    
-}
+import garjust.jag2d.geometry.Geometry;
+
+public interface MoveableCircle extends Geometry<Circle> {}

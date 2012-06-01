@@ -1,17 +1,8 @@
 package garjust.jag2d.geometry.point;
 
+import garjust.jag2d.geometry.Geometry;
 
-/**
- *
- * @author jagarbut
- */
-public interface MoveablePoint {
-
-    public Point rotate(final float theta);
+public interface MoveablePoint extends Geometry<Point> {
 
     public Point rotate(final float theta, final ReadablePoint center);
-
-    public Point scale(final float scalar);
-
-    public Point translate(final float x, final float y);
 }

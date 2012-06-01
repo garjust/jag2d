@@ -24,4 +24,6 @@ public interface ReadableVector {
     public void draw(final Graphics2D graphics, final Color colour);
 
     public void draw(final Graphics2D graphics, final Color colour, final ReadablePoint position);
+
+    public Vector copy();
 }

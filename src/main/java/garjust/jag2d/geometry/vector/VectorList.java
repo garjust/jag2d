@@ -1,8 +1,11 @@
 package garjust.jag2d.geometry.vector;
 
+import garjust.jag2d.geometry.Drawable;
+
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-public class VectorList extends ArrayList<Vector> {
+public class VectorList extends ArrayList<Vector> implements Drawable {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,15 +24,10 @@ public class VectorList extends ArrayList<Vector> {
         }
     }
 
-    public int[][] getCoordinateMatrix() {
-        int[][] matrix = new int[2][size()];
-        int i = 0;
-        for (Vector vector : this) {
-            Vector drawable = vector.snap();
-            matrix[0][i] = (int) drawable.x();
-            matrix[1][i] = (int) drawable.y();
-            i++;
+    @Override
+    public void draw(Graphics2D graphics) {
+        for (Drawable drawable : this) {
+            drawable.draw(graphics);
         }
-        return matrix;
     }
 }

@@ -3,7 +3,6 @@ package garjust.jag2d.geometry.polygon;
 import garjust.jag2d.collision.BoundingBox;
 import garjust.jag2d.collision.Collidable;
 import garjust.jag2d.geometry.Drawable;
-import garjust.jag2d.geometry.Geometry;
 import garjust.jag2d.geometry.point.MoveablePoint;
 import garjust.jag2d.geometry.point.Point;
 import garjust.jag2d.geometry.point.PointList;
@@ -14,11 +13,7 @@ import garjust.jag2d.util.Sort;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-/**
- * 
- * @author Justin Garbutt
- */
-public class Polygon implements Collidable, Drawable, Geometry, ReadablePolygon, MoveablePolygon {
+public class Polygon implements Collidable, Drawable, ReadablePolygon, MoveablePolygon {
 
     private PointList vertices;
     private Point centre;

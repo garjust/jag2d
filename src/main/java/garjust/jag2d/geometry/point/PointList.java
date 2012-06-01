@@ -25,8 +25,8 @@ public final class PointList extends ArrayList<Point> {
         final int[][] matrix = new int[2][size()];
         int i = 0;
         for (Point point : this) {
-            matrix[0][i] = point.getSnappedX();
-            matrix[1][i] = point.getSnappedY();
+            matrix[0][i] = point.snappedX();
+            matrix[1][i] = point.snappedY();
             i++;
         }
         return matrix;

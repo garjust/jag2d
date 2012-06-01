@@ -1,7 +1,6 @@
 package garjust.jag2d.geometry.vector;
 
 import garjust.jag2d.geometry.Drawable;
-import garjust.jag2d.geometry.Geometry;
 import garjust.jag2d.geometry.point.Point;
 import garjust.jag2d.geometry.point.ReadablePoint;
 import garjust.jag2d.util.FloatMath;
@@ -11,12 +10,23 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+/**
+ * Mutable vector class
+ * 
+ * Interfaces exist to limit the mutability of this vector class, and allow for
+ * Immutable implementations if desired
+ * 
+ * Geometric transformations affect the current object while other methods
+ * return new vectors
+ */
 @Accessors(fluent = true)
 @Data
-public class Vector implements Drawable, Geometry, ReadableVector, MoveableVector {
+@AllArgsConstructor
+public class Vector implements Drawable, ReadableVector, MoveableVector, CopyableVector {
 
     public static final ReadableVector ZERO = new Vector(0, 0);
     public static final ReadableVector X_UNIT_VECTOR = new Vector(1, 0);
@@ -24,21 +34,6 @@ public class Vector implements Drawable, Geometry, ReadableVector, MoveableVecto
     public static final ReadableVector DIAGONAL_VECTOR = new Vector(1, 1).unit();
     private float x;
     private float y;
-
-    public Vector() {
-        this.x = ZERO.x();
-        this.y = ZERO.y();
-    }
-
-    public Vector(final float x, final float y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public Vector(final ReadableVector vector) {
-        x = vector.x();
-        y = vector.y();
-    }
 
     @Override
     public int snappedX() {
@@ -57,14 +52,14 @@ public class Vector implements Drawable, Geometry, ReadableVector, MoveableVecto
 
     @Override
     public float angle() {
-        return length() == 0 ? 0 : FloatMath.acos(x / length());
+        return x == 0 && y == 0 ? 0 : FloatMath.acos(x / length());
     }
 
     @Override
     public Vector rotate(final float theta) {
-        final float temp_x = x;
+        final float tempX = x;
         x = x * FloatMath.cos(theta) - y * FloatMath.sin(theta);
-        y = temp_x * FloatMath.sin(theta) + y * FloatMath.cos(theta);
+        y = tempX * FloatMath.sin(theta) + y * FloatMath.cos(theta);
         return this;
     }
 
@@ -75,17 +70,6 @@ public class Vector implements Drawable, Geometry, ReadableVector, MoveableVecto
         return this;
     }
 
-    /**
-     * Translates the vector by x,y units
-     * 
-     * <p>
-     * DESTRUCTIVE
-     * </p>
-     * 
-     * @param x
-     * @param y
-     * @return This vector
-     */
     @Override
     public Vector translate(final float x, final float y) {
         this.x += x;
@@ -93,24 +77,29 @@ public class Vector implements Drawable, Geometry, ReadableVector, MoveableVecto
         return this;
     }
 
+    @Override
     public Vector length(final float new_length) {
         final ReadableVector unit = unit();
         return new Vector(unit.x() * new_length, unit.y() * new_length);
     }
 
+    @Override
     public Vector snap() {
         return new Vector(Math.round(x), Math.round(y));
     }
 
+    @Override
     public Vector negate() {
         return new Vector(-x, -y);
     }
 
+    @Override
     public Vector unit() {
         final float magnitude = length();
         return new Vector(x / magnitude, y / magnitude);
     }
 
+    @Override
     public Vector normal() {
         return new Vector(-y, x);
     }
@@ -128,7 +117,7 @@ public class Vector implements Drawable, Geometry, ReadableVector, MoveableVecto
     }
 
     public static Vector subtract(final ReadableVector vector1, final ReadableVector vector2) {
-        return add(vector1, new Vector(vector2).negate());
+        return add(vector1, vector2.copy().negate());
     }
 
     public static Vector pointToPointVector(final ReadableVector vector1, final ReadableVector vector2) {
@@ -150,18 +139,23 @@ public class Vector implements Drawable, Geometry, ReadableVector, MoveableVecto
         final GraphicsConfig graphics_config = new GraphicsConfig(graphics);
         graphics.setColor(java.awt.Color.WHITE);
         graphics.setStroke(new BasicStroke(1));
-        graphics.drawLine(location.getSnappedX(), location.getSnappedY(), location.getSnappedX() + snappedX(),
-                location.getSnappedY() + snappedY());
+        graphics.drawLine(location.snappedX(), location.snappedY(), location.snappedX() + snappedX(),
+                location.snappedY() + snappedY());
         graphics.setStroke(new BasicStroke(2));
-        graphics.drawRect(location.getSnappedX(), location.getSnappedY(), 1, 1);
+        graphics.drawRect(location.snappedX(), location.snappedY(), 1, 1);
         graphics.setColor(colour);
         graphics.setStroke(new BasicStroke(4));
-        graphics.drawRect(location.getSnappedX() + snappedX(), location.getSnappedY() + snappedY(), 1, 1);
+        graphics.drawRect(location.snappedX() + snappedX(), location.snappedY() + snappedY(), 1, 1);
         graphics_config.set(graphics);
     }
 
     public float[] toArray() {
         final float[] vector = { x, y };
         return vector;
+    }
+
+    @Override
+    public Vector copy() {
+        return new Vector(x, y);
     }
 }

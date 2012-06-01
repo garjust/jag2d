@@ -5,23 +5,19 @@ import garjust.jag2d.collision.Collidable;
 import garjust.jag2d.geometry.point.Point;
 import garjust.jag2d.geometry.point.PointList;
 import garjust.jag2d.geometry.polygon.Polygon;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
-public class Circle implements Collidable {
+@Accessors(fluent = true)
+@Data
+public class Circle implements Collidable, MoveableCircle, ReadableCircle {
 
-    private final Point center;
-    private final int radius;
+    private Point center;
+    private float radius;
 
-    public Circle(final Point center, final int radius) {
-        this.center = new Point(center);
+    public Circle(final Point center, final float radius) {
+        this.center = center.copy();
         this.radius = radius;
-    }
-
-    public final Point center() {
-        return new Point(center);
-    }
-
-    public final int radius() {
-        return radius;
     }
 
     public final Polygon poly() {
@@ -33,7 +29,7 @@ public class Circle implements Collidable {
         final float point_theta = ((float) Math.PI * 2) / points;
         vertices.add(new Point(center.x(), center.y() + radius));
         for (int i = 1; i < points; i++) {
-            vertices.add(new Point(vertices.get(i - 1)).rotate(point_theta, center));
+            vertices.add(vertices.get(i - 1).copy().rotate(point_theta, center));
         }
         return new Polygon(vertices);
     }
@@ -44,6 +40,33 @@ public class Circle implements Collidable {
     }
 
     public void draw(final java.awt.Graphics2D graphics) {
-        graphics.drawOval((int) center.x(), (int) center.y(), radius * 2, radius * 2);
+        graphics.drawOval(center.snappedX(), center.snappedY(), snappedRadius() * 2, snappedRadius() * 2);
+    }
+
+    @Override
+    public Circle rotate(float theta) {
+        return this;
+    }
+
+    @Override
+    public Circle scale(float scalar) {
+        radius *= scalar;
+        return this;
+    }
+
+    @Override
+    public Circle translate(float x, float y) {
+        center.translate(x, y);
+        return this;
+    }
+
+    @Override
+    public int snappedRadius() {
+        return Math.round(radius);
+    }
+
+    @Override
+    public Circle copy() {
+        return new Circle(center, radius);
     }
 }

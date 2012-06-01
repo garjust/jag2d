@@ -57,7 +57,7 @@ public class PointTest {
     @Test
     public void testGetSnappedX() {
         final int expected = 15;
-        final int result = new Point(15.3f, 30.5f).getSnappedX();
+        final int result = new Point(15.3f, 30.5f).snappedX();
         assertEquals(expected, result);
     }
 
