@@ -1,6 +1,6 @@
 package garjust.jag2d.geometry.vector;
 
-import static garjust.jag2d.test.CustomAssert.assertThatDouble;
+import static garjust.jag2d.test.CustomAssert.assertThatFloat;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
@@ -34,79 +34,24 @@ public class VectorTest {
         assertThat(Vector.X_UNIT_VECTOR.angle(), is(0f));
         assertThat(Vector.Y_UNIT_VECTOR.length(), is(1f));
         assertThat(Vector.Y_UNIT_VECTOR.angle(), is(FloatMath.PI / 2));
-        assertThatDouble(Vector.DIAGONAL_VECTOR.length(), is(closeTo(1, acceptableError)));
-        assertThatDouble(Vector.DIAGONAL_VECTOR.angle(), is(closeTo(Math.PI / 4, acceptableError)));
-    }
-
-    @Test
-    public void shouldGiveSnappedVectorCoordinates() throws Exception {
-        final int expectedX = 15;
-        final int expectedY = 31;
-        final Vector testable = new Vector(15.3f, 30.5f);
-
-        assertThat(testable.snappedX(), is(expectedX));
-        assertThat(testable.snappedY(), is(expectedY));
+        assertThatFloat(Vector.DIAGONAL_VECTOR.length(), is(closeTo(1, acceptableError)));
+        assertThatFloat(Vector.DIAGONAL_VECTOR.angle(), is(closeTo(Math.PI / 4, acceptableError)));
     }
 
     @Test
     public void shouldHaveCorrectLength() throws Exception {
-        assertThatDouble(quadrant1.length(), is(closeTo(10.7703, acceptableError)));
-        assertThatDouble(quadrant2.length(), is(closeTo(6.00333, acceptableError)));
-        assertThatDouble(quadrant3.length(), is(closeTo(9.21954, acceptableError)));
-        assertThatDouble(quadrant4.length(), is(closeTo(10.6569, acceptableError)));
+        assertThatFloat(quadrant1.length(), is(closeTo(10.7703, acceptableError)));
+        assertThatFloat(quadrant2.length(), is(closeTo(6.00333, acceptableError)));
+        assertThatFloat(quadrant3.length(), is(closeTo(9.21954, acceptableError)));
+        assertThatFloat(quadrant4.length(), is(closeTo(10.6569, acceptableError)));
     }
 
     @Test
     public void shouldCalculateCorrectAngle() throws Exception {
-        assertThatDouble(quadrant1.angle(), is(closeTo(0.38051, acceptableError)));
-        assertThatDouble(quadrant2.angle(), is(closeTo(2.09407, acceptableError)));
-        assertThatDouble(quadrant3.angle(), is(closeTo(-2.38414, acceptableError)));
-        assertThatDouble(quadrant4.angle(), is(closeTo(-1.24607, acceptableError)));
-    }
-
-    @Test
-    public void shouldRotateVectors() throws Exception {
-        Vector expectedVector = new Vector(1, 1);
-        assertThat(quadrant1.rotate(1), is(expectedVector));
-
-        expectedVector = new Vector(1, 1);
-        assertThat(quadrant2.rotate(1), is(expectedVector));
-
-        expectedVector = new Vector(1, 1);
-        assertThat(quadrant3.rotate(1), is(expectedVector));
-
-        expectedVector = new Vector(1, 1);
-        assertThat(quadrant4.rotate(1), is(expectedVector));
-    }
-
-    @Test
-    public void shouldScaleVectors() throws Exception {
-        Vector expectedVector = new Vector(1, 1);
-        assertThat(quadrant1.scale(1), is(expectedVector));
-
-        expectedVector = new Vector(1, 1);
-        assertThat(quadrant2.scale(1), is(expectedVector));
-
-        expectedVector = new Vector(1, 1);
-        assertThat(quadrant3.scale(1), is(expectedVector));
-
-        expectedVector = new Vector(1, 1);
-        assertThat(quadrant4.scale(1), is(expectedVector));
-    }
-
-    @Test
-    public void shouldTranslateVectors() throws Exception {
-        Vector expectedVector = new Vector(1, 1);
-        assertThat(quadrant1.translate(1, 1), is(expectedVector));
-
-        expectedVector = new Vector(1, 1);
-        assertThat(quadrant2.translate(1, 1), is(expectedVector));
-
-        expectedVector = new Vector(1, 1);
-        assertThat(quadrant3.translate(1, 1), is(expectedVector));
-
-        expectedVector = new Vector(1, 1);
-        assertThat(quadrant4.translate(1, 1), is(expectedVector));
+        assertThatFloat(quadrant1.angle(), is(closeTo(0.38051, acceptableError)));
+        assertThatFloat(quadrant2.angle(), is(closeTo(2.09407, acceptableError)));
+        assertThatFloat(quadrant3.angle(), is(closeTo(-2.38414, acceptableError)));
+        assertThatFloat(quadrant4.angle(), is(closeTo(-1.24607, acceptableError)));
     }
 
     @Test

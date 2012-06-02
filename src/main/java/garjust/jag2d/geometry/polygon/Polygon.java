@@ -2,7 +2,7 @@ package garjust.jag2d.geometry.polygon;
 
 import garjust.jag2d.collision.BoundingBox;
 import garjust.jag2d.collision.Collidable;
-import garjust.jag2d.geometry.Drawable;
+import garjust.jag2d.core.Drawable;
 import garjust.jag2d.geometry.point.MoveablePoint;
 import garjust.jag2d.geometry.point.Point;
 import garjust.jag2d.geometry.point.PointList;

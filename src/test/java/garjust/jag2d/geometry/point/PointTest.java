@@ -1,4 +1,4 @@
-package garjust.jag2d.geometry;
+package garjust.jag2d.geometry.point;
 
 import garjust.jag2d.geometry.point.Point;
 import garjust.jag2d.geometry.point.ReadablePoint;

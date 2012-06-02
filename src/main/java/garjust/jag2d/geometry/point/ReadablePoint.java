@@ -1,6 +1,6 @@
 package garjust.jag2d.geometry.point;
 
-import garjust.jag2d.geometry.Drawable;
+import garjust.jag2d.core.Drawable;
 
 public interface ReadablePoint extends Drawable {
 

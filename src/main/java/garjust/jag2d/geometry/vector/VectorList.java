@@ -1,6 +1,6 @@
 package garjust.jag2d.geometry.vector;
 
-import garjust.jag2d.geometry.Drawable;
+import garjust.jag2d.core.Drawable;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;

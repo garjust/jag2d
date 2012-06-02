@@ -1,7 +1,7 @@
 package garjust.jag2d.geometry.vector;
 
+import garjust.jag2d.core.Drawable;
 import garjust.jag2d.geometry.Copyable;
-import garjust.jag2d.geometry.Drawable;
 
 public interface ReadableVector extends Drawable, Copyable<Vector> {
 

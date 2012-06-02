@@ -1,4 +1,4 @@
-package garjust.jag2d.geometry;
+package garjust.jag2d.core;
 
 import java.awt.Graphics2D;
 

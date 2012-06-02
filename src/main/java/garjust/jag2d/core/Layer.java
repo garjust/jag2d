@@ -1,8 +1,10 @@
 package garjust.jag2d.core;
 
-import java.util.ArrayList;
+import garjust.jag2d.core.util.EntityList;
 
 public class Layer extends EntityList {
+
+    private static final long serialVersionUID = 1L;
 
     public Layer() {
         super();
@@ -13,13 +15,13 @@ public class Layer extends EntityList {
     }
 
     public void draw(java.awt.Graphics2D graphics) {
-        for(Entity entity: this) {
+        for (Entity entity : this) {
             entity.draw(graphics);
         }
     }
 
     public void update(final float delta) {
-        for(Entity entity: this) {
+        for (Entity entity : this) {
             entity.update(delta);
         }
     }

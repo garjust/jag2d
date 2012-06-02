@@ -6,7 +6,7 @@ import org.hamcrest.Matcher;
 
 public class CustomAssert {
 
-    public static void assertThatDouble(float expected, Matcher<Double> matcher) {
+    public static void assertThatFloat(float expected, Matcher<Double> matcher) {
         assertThat((double) expected, matcher);
     }
 }

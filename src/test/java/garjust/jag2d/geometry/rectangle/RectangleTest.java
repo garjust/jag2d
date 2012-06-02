@@ -1,4 +1,4 @@
-package garjust.jag2d.geometry;
+package garjust.jag2d.geometry.rectangle;
 
 import garjust.jag2d.collision.BoundingBox;
 import garjust.jag2d.geometry.point.Point;

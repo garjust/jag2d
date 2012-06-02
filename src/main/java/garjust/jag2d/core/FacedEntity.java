@@ -8,7 +8,7 @@ import garjust.jag2d.geometry.vector.Vector;
 import java.awt.Graphics2D;
 
 /**
- *
+ * 
  * @author t_garbj
  */
 public class FacedEntity extends PolygonEntity {
@@ -26,21 +26,21 @@ public class FacedEntity extends PolygonEntity {
     }
 
     public FacedEntity(final FacedEntity entity) {
-         super(entity);
-         this.facing = entity.facing;
+        super(entity);
+        this.facing = entity.facing;
     }
 
     @Override
     public void draw(Graphics2D graphics) {
         super.draw(graphics);
-        final CopyableVector scaled = new Vector(facing);
+        final CopyableVector scaled = facing.copy();
         scaled.length(10).draw(graphics, java.awt.Color.GREEN, position);
     }
 
     @Override
     public void update(final float delta) {
         super.update(delta);
-        if(rotation_velocity != 0) {
+        if (rotation_velocity != 0) {
             facing.rotate(rotation_velocity * (delta / 1000));
         }
     }
