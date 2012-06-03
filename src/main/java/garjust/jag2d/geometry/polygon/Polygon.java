@@ -2,8 +2,8 @@ package garjust.jag2d.geometry.polygon;
 
 import garjust.jag2d.collision.BoundingBox;
 import garjust.jag2d.collision.Collidable;
-import garjust.jag2d.core.Drawable;
 import garjust.jag2d.geometry.CenterableGeometry;
+import garjust.jag2d.geometry.Copyable;
 import garjust.jag2d.geometry.point.MoveablePoint;
 import garjust.jag2d.geometry.point.Point;
 import garjust.jag2d.geometry.point.PointList;
@@ -21,17 +21,13 @@ import lombok.experimental.Accessors;
 
 @Accessors(fluent = true)
 @Data
-public class Polygon implements Collidable, Drawable, CenterableGeometry {
+public class Polygon implements Collidable, CenterableGeometry, Copyable<Polygon> {
 
     private PointList vertices;
     @Setter(AccessLevel.NONE)
-    private Point centre;
+    private Point center;
     @Setter(AccessLevel.NONE)
     private Polygon hull;
-
-    public Polygon() {
-        this(new PointList());
-    }
 
     public Polygon(final ReadableRectangle rectangle) {
         this.vertices = new PointList(4);
@@ -39,74 +35,82 @@ public class Polygon implements Collidable, Drawable, CenterableGeometry {
         vertices.add(new Point(rectangle.origin().x(), rectangle.origin().y() + rectangle.h()));
         vertices.add(new Point(rectangle.origin().x() + rectangle.w(), rectangle.origin().y()));
         vertices.add(new Point(rectangle.origin().x() + rectangle.w(), rectangle.origin().y() + rectangle.h()));
-        this.centre = null;
+        this.center = null;
         this.hull = null;
     }
 
     public Polygon(final PointList vertices) {
         this.vertices = new PointList(vertices);
-        this.centre = null;
+        this.center = null;
         this.hull = null;
     }
 
-    public final Point centre() {
-        if (centre == null) {
-            float x_total = 0;
-            float y_total = 0;
-            for (Point vertex : this.vertices()) {
-                x_total += vertex.x();
-                y_total += vertex.y();
-            }
-            x_total /= this.vertices().size();
-            y_total /= this.vertices().size();
-            centre = new Point(x_total, y_total);
+    public final Point center() {
+        if (center == null) {
+            center = findCenter();
         }
-        return centre.copy();
+        return center.copy();
     }
 
     public final Polygon hull() {
         if (hull == null) {
-            Point lowest_y = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
-            for (Point vertex : vertices) {
-                if (vertex.y() < lowest_y.y()) {
-                    lowest_y = vertex;
-                } else if (vertex.y() == lowest_y.y()) {
-                    if (vertex.x() < lowest_y.x()) {
-                        lowest_y = vertex;
-                    }
-                }
-            }
-            Point[] points = new Point[vertices.size()];
-            points = vertices.toArray(points);
-            float[] sortee = new float[vertices.size()];
-            for (int i = 0; i < sortee.length; i++) {
-                if (points[i] == lowest_y) {
-                    sortee[i] = 0;
-                } else {
-                    sortee[i] = points[i].pointToPointVector(lowest_y).angle();
-                }
-            }
-            Sort.bubble(sortee, points);
-            PointList the_hull = new PointList(points.length);
-            the_hull.add(points[0]);
-            the_hull.add(points[1]);
-            int stack = 2;
-            for (int i = 2; i < points.length; i++) {
-                while (ccw(the_hull.get(stack - 2), the_hull.get(stack - 1), points[i]) > 0) { // WHILE
-                                                                                               // RIGHT
-                                                                                               // TURN
-                    the_hull.remove(stack - 1);
-                    stack--;
-                    if (stack == 1) {
-                        break;
-                    }
-                }
-                the_hull.add(points[i]);
-                stack++;
-            }
-            hull = new Polygon(the_hull);
+            hull = findHull();
         }
         return hull;
+    }
+
+    private Point findCenter() {
+        float x_total = 0;
+        float y_total = 0;
+        for (Point vertex : this.vertices()) {
+            x_total += vertex.x();
+            y_total += vertex.y();
+        }
+        x_total /= this.vertices().size();
+        y_total /= this.vertices().size();
+        return new Point(x_total, y_total);
+    }
+
+    private Polygon findHull() {
+        Point lowest_y = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        for (Point vertex : vertices) {
+            if (vertex.y() < lowest_y.y()) {
+                lowest_y = vertex;
+            } else if (vertex.y() == lowest_y.y()) {
+                if (vertex.x() < lowest_y.x()) {
+                    lowest_y = vertex;
+                }
+            }
+        }
+        Point[] points = new Point[vertices.size()];
+        points = vertices.toArray(points);
+        float[] sortee = new float[vertices.size()];
+        for (int i = 0; i < sortee.length; i++) {
+            if (points[i] == lowest_y) {
+                sortee[i] = 0;
+            } else {
+                sortee[i] = points[i].pointToPointVector(lowest_y).angle();
+            }
+        }
+        Sort.bubble(sortee, points);
+        PointList the_hull = new PointList(points.length);
+        the_hull.add(points[0]);
+        the_hull.add(points[1]);
+        int stack = 2;
+        for (int i = 2; i < points.length; i++) {
+            while (ccw(the_hull.get(stack - 2), the_hull.get(stack - 1), points[i]) > 0) { // WHILE
+                                                                                           // RIGHT
+                                                                                           // TURN
+                the_hull.remove(stack - 1);
+                stack--;
+                if (stack == 1) {
+                    break;
+                }
+            }
+            the_hull.add(points[i]);
+            stack++;
+        }
+        return new Polygon(the_hull);
     }
 
     @Override
@@ -117,8 +121,8 @@ public class Polygon implements Collidable, Drawable, CenterableGeometry {
         if (hull != null) {
             hull.rotate(theta);
         }
-        if (centre != null) {
-            centre.rotate(theta);
+        if (center != null) {
+            center.rotate(theta);
         }
     }
 
@@ -130,21 +134,21 @@ public class Polygon implements Collidable, Drawable, CenterableGeometry {
         if (hull != null) {
             hull.rotate(theta, position);
         }
-        if (centre != null) {
-            centre.rotate(theta, position);
+        if (center != null) {
+            center.rotate(theta, position);
         }
     }
 
     @Override
     public void scale(final float scalar) {
-        centre();
+        center();
         for (MoveablePoint vertex : vertices) {
-            vertex.translate(-1 * centre.x(), -1 * centre.y());
+            vertex.translate(-1 * center.x(), -1 * center.y());
             vertex.scale(scalar);
-            vertex.translate(centre.x(), centre.y());
+            vertex.translate(center.x(), center.y());
         }
-        resetCentre();
-        resetHull();
+        center = null;
+        hull = null;
     }
 
     @Override
@@ -155,8 +159,8 @@ public class Polygon implements Collidable, Drawable, CenterableGeometry {
         if (hull != null) {
             hull.translate(x, y);
         }
-        if (centre != null) {
-            centre.translate(x, y);
+        if (center != null) {
+            center.translate(x, y);
         }
     }
 
@@ -167,17 +171,15 @@ public class Polygon implements Collidable, Drawable, CenterableGeometry {
 
     public void draw(final Graphics2D graphics, final boolean debug) {
         if (debug) {
-            centre();
+            center();
             hull();
             Color color_save = graphics.getColor();
             graphics.setColor(Color.YELLOW);
-            final int[][] coordinate_matrix = hull().vertices().getCoordinateMatrix();
-            graphics.drawPolygon(coordinate_matrix[0], coordinate_matrix[1], hull().vertices().size());
-            centre.draw(graphics, Color.YELLOW);
+            hull.draw(graphics);
+            center.draw(graphics, Color.YELLOW);
             graphics.setColor(color_save);
         }
-        final int[][] coordinate_matrix = vertices.getCoordinateMatrix();
-        graphics.drawPolygon(coordinate_matrix[0], coordinate_matrix[1], vertices.size());
+        vertices.drawConnected(graphics);
     }
 
     /**
@@ -215,39 +217,7 @@ public class Polygon implements Collidable, Drawable, CenterableGeometry {
     }
 
     @Override
-    public boolean equals(final Object other) {
-        if (other == null) {
-            return false;
-        } else if (other == this) {
-            return true;
-        } else if (this.getClass() != other.getClass()) {
-            return false;
-        }
-        final ReadablePolygon polygon = (Polygon) other;
-        if (vertices.equals(polygon.vertices())) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 17 * hash + (this.vertices != null ? this.vertices.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public String toString() {
-        String polygon = "[Polygon:";
-        for (ReadablePoint vertex : vertices) {
-            polygon += " " + vertex.toString();
-        }
-        return polygon + "]";
-    }
-
-    @Override
     public Polygon copy() {
-        return new Polygon(vertices.copy(), centre.copy());
+        return new Polygon(vertices.copy());
     }
 }

@@ -1,11 +1,10 @@
 package garjust.jag2d.geometry.vector;
 
 import garjust.jag2d.geometry.CartesianCoordinate;
+import garjust.jag2d.geometry.point.Point;
+import garjust.jag2d.geometry.point.ReadablePoint;
 import garjust.jag2d.util.FloatMath;
-import garjust.jag2d.util.GraphicsConfig;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics2D;
 
 /**
@@ -111,15 +110,12 @@ public class Vector extends CartesianCoordinate implements ReadableVector, Movea
 
     @Override
     public void draw(final Graphics2D graphics) {
-        this.draw(graphics, java.awt.Color.RED);
+        draw(graphics, Point.ZERO);
     }
 
-    public void draw(final Graphics2D graphics, final Color colour) {
-        final GraphicsConfig graphics_config = new GraphicsConfig(graphics);
-        graphics.setColor(colour);
-        graphics.setStroke(new BasicStroke(4));
-        graphics.drawRect(snappedX(), snappedY(), 1, 1);
-        graphics_config.set(graphics);
+    public void draw(final Graphics2D graphics, final ReadablePoint location) {
+        graphics.drawLine(location.snappedX(), location.snappedY(), location.snappedX() + snappedX(), location.snappedY() + snappedY());
+        graphics.fillRect(location.snappedX() + snappedX(), location.snappedY() + snappedY(), 2, 2);
     }
 
     @Override

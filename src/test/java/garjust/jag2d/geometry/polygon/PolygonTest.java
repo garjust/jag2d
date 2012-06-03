@@ -57,12 +57,12 @@ public class PolygonTest {
     // TODO using "f" in expected2 constructor
     public void testCentre() {
         final Point expected = new Point(5, 5);
-        final Point result = new Polygon(polygon1).centre();
+        final Point result = new Polygon(polygon1).center();
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
         final Point expected2 = new Point(7f / 3f, 2);
         System.err.println(expected2);
-        final Point result2 = new Polygon(polygon2).centre();
+        final Point result2 = new Polygon(polygon2).center();
         assertEquals(expected2.x(), result2.x(), 0.001);
         assertEquals(expected2.y(), result2.y(), 0.001);
     }
@@ -82,9 +82,9 @@ public class PolygonTest {
 
     @Test
     public void testResetCentre() {
-        final Point expected1 = new Polygon(polygon2).centre();
+        final Point expected1 = new Polygon(polygon2).center();
         final Polygon result = new Polygon(polygon2);
-        result.centre();
+        result.center();
         assert(expected1.equals(result.resetCentre()));
     }
 

@@ -27,10 +27,19 @@ public class PointList extends ArrayList<Point> implements Drawable, Copyable<Po
     }
 
     @Override
-    public void draw(Graphics2D graphics) {
+    public void draw(final Graphics2D graphics) {
         for (Drawable drawable : this) {
             drawable.draw(graphics);
         }
+    }
+
+    public void drawConnected(final Graphics2D graphics) {
+        final int[][] vertices = new int[2][size()];
+        for (int i = 0; i < size(); i++) {
+            vertices[0][i] = get(i).snappedX();
+            vertices[1][i] = get(i).snappedY();
+        }
+        graphics.drawPolygon(vertices[0], vertices[1], size());
     }
 
     @Override

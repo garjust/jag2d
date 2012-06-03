@@ -2,15 +2,10 @@ package garjust.jag2d.core;
 
 import garjust.jag2d.geometry.point.Point;
 import garjust.jag2d.geometry.polygon.Polygon;
-import garjust.jag2d.geometry.vector.CopyableVector;
 import garjust.jag2d.geometry.vector.Vector;
 
 import java.awt.Graphics2D;
 
-/**
- * 
- * @author t_garbj
- */
 public class FacedEntity extends PolygonEntity {
 
     public Vector facing;
@@ -33,8 +28,9 @@ public class FacedEntity extends PolygonEntity {
     @Override
     public void draw(Graphics2D graphics) {
         super.draw(graphics);
-        final CopyableVector scaled = facing.copy();
-        scaled.length(10).draw(graphics, java.awt.Color.GREEN, position);
+        final Vector scaled = facing.copy();
+        scaled.length(10);
+        scaled.draw(graphics, position);
     }
 
     @Override
