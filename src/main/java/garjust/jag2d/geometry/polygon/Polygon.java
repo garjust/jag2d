@@ -3,6 +3,7 @@ package garjust.jag2d.geometry.polygon;
 import garjust.jag2d.collision.BoundingBox;
 import garjust.jag2d.collision.Collidable;
 import garjust.jag2d.core.Drawable;
+import garjust.jag2d.geometry.CenterableGeometry;
 import garjust.jag2d.geometry.point.MoveablePoint;
 import garjust.jag2d.geometry.point.Point;
 import garjust.jag2d.geometry.point.PointList;
@@ -13,14 +14,31 @@ import garjust.jag2d.util.Sort;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class Polygon implements Collidable, Drawable, ReadablePolygon, MoveablePolygon {
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+@Accessors(fluent = true)
+@Data
+public class Polygon implements Collidable, Drawable, CenterableGeometry {
 
     private PointList vertices;
+    @Setter(AccessLevel.NONE)
     private Point centre;
+    @Setter(AccessLevel.NONE)
     private Polygon hull;
 
     public Polygon() {
-        this.vertices = new PointList();
+        this(new PointList());
+    }
+
+    public Polygon(final ReadableRectangle rectangle) {
+        this.vertices = new PointList(4);
+        vertices.add(new Point(rectangle.origin().x(), rectangle.origin().y()));
+        vertices.add(new Point(rectangle.origin().x(), rectangle.origin().y() + rectangle.h()));
+        vertices.add(new Point(rectangle.origin().x() + rectangle.w(), rectangle.origin().y()));
+        vertices.add(new Point(rectangle.origin().x() + rectangle.w(), rectangle.origin().y() + rectangle.h()));
         this.centre = null;
         this.hull = null;
     }
@@ -31,33 +49,6 @@ public class Polygon implements Collidable, Drawable, ReadablePolygon, MoveableP
         this.hull = null;
     }
 
-    /**
-     * COPY CONSTRUCTOR
-     * 
-     * @param polygon
-     */
-    public Polygon(final ReadablePolygon polygon) {
-        this.vertices = new PointList(polygon.vertices());
-        this.centre = null;
-        this.hull = null;
-    }
-
-    public Polygon(final ReadableRectangle rectangle) {
-        this.vertices = new PointList(4);
-        vertices.add(new Point(rectangle.x(), rectangle.y()));
-        vertices.add(new Point(rectangle.x(), rectangle.y() + rectangle.h()));
-        vertices.add(new Point(rectangle.x() + rectangle.w(), rectangle.y()));
-        vertices.add(new Point(rectangle.x() + rectangle.w(), rectangle.y() + rectangle.h()));
-        this.centre = null;
-        this.hull = null;
-    }
-
-    @Override
-    public final PointList vertices() {
-        return new PointList(vertices);
-    }
-
-    @Override
     public final Point centre() {
         if (centre == null) {
             float x_total = 0;
@@ -70,10 +61,9 @@ public class Polygon implements Collidable, Drawable, ReadablePolygon, MoveableP
             y_total /= this.vertices().size();
             centre = new Point(x_total, y_total);
         }
-        return new Point(centre);
+        return centre.copy();
     }
 
-    @Override
     public final Polygon hull() {
         if (hull == null) {
             Point lowest_y = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -93,7 +83,7 @@ public class Polygon implements Collidable, Drawable, ReadablePolygon, MoveableP
                 if (points[i] == lowest_y) {
                     sortee[i] = 0;
                 } else {
-                    sortee[i] = Point.pointToPointVector(points[i], lowest_y).angle();
+                    sortee[i] = points[i].pointToPointVector(lowest_y).angle();
                 }
             }
             Sort.bubble(sortee, points);
@@ -116,34 +106,11 @@ public class Polygon implements Collidable, Drawable, ReadablePolygon, MoveableP
             }
             hull = new Polygon(the_hull);
         }
-        return new Polygon(hull);
+        return hull;
     }
 
-    public final PointList vertices(final PointList new_vertices) {
-        final PointList old_vertices = vertices;
-        vertices = new PointList(new_vertices);
-        return old_vertices;
-    }
-
-    public final Point resetCentre() {
-        final Point old_centre = centre;
-        centre = null;
-        return old_centre;
-    }
-
-    public final Polygon resetHull() {
-        final Polygon old_hull = hull;
-        hull = null;
-        return old_hull;
-    }
-
-    /**
-     * 
-     * @param theta
-     * @return
-     */
     @Override
-    public Polygon rotate(final float theta) {
+    public void rotate(final float theta) {
         for (MoveablePoint vertex : vertices) {
             vertex.rotate(theta);
         }
@@ -153,16 +120,10 @@ public class Polygon implements Collidable, Drawable, ReadablePolygon, MoveableP
         if (centre != null) {
             centre.rotate(theta);
         }
-        return this;
     }
 
-    /**
-     * 
-     * @param theta
-     * @return
-     */
     @Override
-    public Polygon rotate(final float theta, final ReadablePoint position) {
+    public void rotate(final float theta, final ReadablePoint position) {
         for (MoveablePoint vertex : vertices) {
             vertex.rotate(theta, position);
         }
@@ -172,11 +133,10 @@ public class Polygon implements Collidable, Drawable, ReadablePolygon, MoveableP
         if (centre != null) {
             centre.rotate(theta, position);
         }
-        return this;
     }
 
     @Override
-    public Polygon scale(final float scalar) {
+    public void scale(final float scalar) {
         centre();
         for (MoveablePoint vertex : vertices) {
             vertex.translate(-1 * centre.x(), -1 * centre.y());
@@ -185,11 +145,10 @@ public class Polygon implements Collidable, Drawable, ReadablePolygon, MoveableP
         }
         resetCentre();
         resetHull();
-        return this;
     }
 
     @Override
-    public Polygon translate(final float x, final float y) {
+    public void translate(final float x, final float y) {
         for (MoveablePoint vertex : vertices) {
             vertex.translate(x, y);
         }
@@ -199,7 +158,6 @@ public class Polygon implements Collidable, Drawable, ReadablePolygon, MoveableP
         if (centre != null) {
             centre.translate(x, y);
         }
-        return this;
     }
 
     @Override
@@ -286,5 +244,10 @@ public class Polygon implements Collidable, Drawable, ReadablePolygon, MoveableP
             polygon += " " + vertex.toString();
         }
         return polygon + "]";
+    }
+
+    @Override
+    public Polygon copy() {
+        return new Polygon(vertices.copy(), centre.copy());
     }
 }

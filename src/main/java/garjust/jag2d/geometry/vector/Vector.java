@@ -8,8 +8,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import lombok.experimental.Accessors;
-
 /**
  * Mutable vector class
  * 
@@ -19,13 +17,12 @@ import lombok.experimental.Accessors;
  * Geometric transformations affect the current object while other methods
  * return new vectors
  */
-@Accessors(fluent = true)
-public class Vector extends CartesianCoordinate implements ReadableVector, MoveableVector, CopyableVector {
+public class Vector extends CartesianCoordinate implements ReadableVector, MoveableVector {
 
     public static final ReadableVector ZERO = new Vector(0, 0);
     public static final ReadableVector X_UNIT_VECTOR = new Vector(1, 0);
     public static final ReadableVector Y_UNIT_VECTOR = new Vector(0, 1);
-    public static final ReadableVector DIAGONAL_VECTOR = new Vector(1, 1).unit();
+    public static final ReadableVector DIAGONAL_VECTOR = new Vector(1, 1).returnUnit();
 
     public Vector(final float x, final float y) {
         super(x, y);
@@ -41,69 +38,75 @@ public class Vector extends CartesianCoordinate implements ReadableVector, Movea
         return x == 0 && y == 0 ? 0 : FloatMath.acos(x / length());
     }
 
-    @Override
     public Vector length(final float new_length) {
-        final ReadableVector unit = unit();
+        final ReadableVector unit = returnUnit();
         return new Vector(unit.x() * new_length, unit.y() * new_length);
     }
 
     @Override
-    public Vector snap() {
+    public Vector returnSnapped() {
         return new Vector(snappedX(), snappedY());
     }
 
-    @Override
     public Vector negate() {
+        x = -x;
+        y = -y;
+        return this;
+    }
+
+    @Override
+    public Vector returnNegated() {
         return new Vector(-x, -y);
     }
 
-    @Override
     public Vector unit() {
-        final float magnitude = length();
-        return new Vector(x / magnitude, y / magnitude);
+        final float length = length();
+        x /= length;
+        y /= length;
+        return this;
     }
 
     @Override
+    public Vector returnUnit() {
+        final float length = length();
+        return new Vector(x / length, y / length);
+    }
+
     public Vector normal() {
+        final float hold = x;
+        x = -y;
+        y = hold;
+        return this;
+    }
+
+    @Override
+    public Vector returnNormal() {
         return new Vector(-y, x);
     }
 
     @Override
-    public Vector rotate(final float theta) {
-        super.rotate(theta);
-        return this;
+    public float angle(ReadableVector otherVector) {
+        return FloatMath.acos(dot(otherVector) / (length() * otherVector.length())) * 180 / FloatMath.PI;
     }
 
     @Override
-    public Vector scale(final float scalar) {
-        super.scale(scalar);
-        return this;
+    public float dot(final ReadableVector otherVector) {
+        return x * otherVector.x() + y * otherVector.y();
     }
 
     @Override
-    public Vector translate(final float x, final float y) {
-        super.translate(x, y);
-        return this;
+    public Vector add(final ReadableVector otherVector) {
+        return new Vector(x + otherVector.x(), y + otherVector.y());
     }
 
-    public static float angle(Vector vector1, Vector vector2) {
-        return FloatMath.acos(dot(vector1, vector2) / (vector1.length() * vector2.length())) * 180 / FloatMath.PI;
+    @Override
+    public Vector subtract(final ReadableVector otherVector) {
+        return add(otherVector.copy().returnNegated());
     }
 
-    public static float dot(final ReadableVector vector1, final ReadableVector vector2) {
-        return vector1.x() * vector2.x() + vector1.y() * vector2.y();
-    }
-
-    public static Vector add(final ReadableVector vector1, final ReadableVector vector2) {
-        return new Vector(vector1.x() + vector2.x(), vector1.y() + vector2.y());
-    }
-
-    public static Vector subtract(final ReadableVector vector1, final ReadableVector vector2) {
-        return add(vector1, vector2.copy().negate());
-    }
-
-    public static Vector pointToPointVector(final ReadableVector vector1, final ReadableVector vector2) {
-        return subtract(vector2, vector1);
+    @Override
+    public Vector pointToPointVector(final ReadableVector otherVector) {
+        return otherVector.subtract(this);
     }
 
     @Override

@@ -4,6 +4,7 @@ import garjust.jag2d.collision.BoundingBox;
 import garjust.jag2d.collision.Collidable;
 import garjust.jag2d.geometry.point.Point;
 import garjust.jag2d.geometry.point.PointList;
+import garjust.jag2d.geometry.point.ReadablePoint;
 import garjust.jag2d.geometry.polygon.Polygon;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -29,7 +30,9 @@ public class Circle implements Collidable, MoveableCircle, ReadableCircle {
         final float point_theta = ((float) Math.PI * 2) / points;
         vertices.add(new Point(center.x(), center.y() + radius));
         for (int i = 1; i < points; i++) {
-            vertices.add(vertices.get(i - 1).copy().rotate(point_theta, center));
+            final Point rotatedVertex = vertices.get(i - 1).copy();
+            rotatedVertex.rotate(point_theta, center);
+            vertices.add(rotatedVertex);
         }
         return new Polygon(vertices);
     }
@@ -39,25 +42,29 @@ public class Circle implements Collidable, MoveableCircle, ReadableCircle {
         return new BoundingBox(this);
     }
 
+    @Override
     public void draw(final java.awt.Graphics2D graphics) {
         graphics.drawOval(center.snappedX(), center.snappedY(), snappedRadius() * 2, snappedRadius() * 2);
     }
 
     @Override
-    public Circle rotate(float theta) {
-        return this;
+    public void rotate(float theta) {
+        center.rotate(theta);
     }
 
     @Override
-    public Circle scale(float scalar) {
+    public void rotate(float theta, ReadablePoint center) {
+        this.center.rotate(theta, center);
+    }
+
+    @Override
+    public void scale(float scalar) {
         radius *= scalar;
-        return this;
     }
 
     @Override
-    public Circle translate(float x, float y) {
+    public void translate(float x, float y) {
         center.translate(x, y);
-        return this;
     }
 
     @Override

@@ -1,8 +1,13 @@
 package garjust.jag2d.geometry.point;
 
-import java.util.ArrayList;
+import garjust.jag2d.core.Drawable;
+import garjust.jag2d.geometry.Copyable;
 
-public final class PointList extends ArrayList<Point> {
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.Collection;
+
+public class PointList extends ArrayList<Point> implements Drawable, Copyable<PointList> {
 
     private static final long serialVersionUID = 1L;
 
@@ -14,21 +19,26 @@ public final class PointList extends ArrayList<Point> {
         super(size);
     }
 
-    public PointList(final PointList points) {
-        super(points.size());
-        for (ReadablePoint point : points) {
-            add(new Point(point));
+    public PointList(final Collection<? extends Point> collection) {
+        super(collection.size());
+        for (Point point : collection) {
+            add(point.copy());
         }
     }
 
-    public int[][] getCoordinateMatrix() {
-        final int[][] matrix = new int[2][size()];
-        int i = 0;
-        for (Point point : this) {
-            matrix[0][i] = point.snappedX();
-            matrix[1][i] = point.snappedY();
-            i++;
+    @Override
+    public void draw(Graphics2D graphics) {
+        for (Drawable drawable : this) {
+            drawable.draw(graphics);
         }
-        return matrix;
+    }
+
+    @Override
+    public PointList copy() {
+        final PointList list = new PointList();
+        for (final Point point : this) {
+            list.add(point.copy());
+        }
+        return list;
     }
 }

@@ -16,4 +16,22 @@ public interface ReadableVector extends Drawable, Copyable<Vector> {
     public float length();
 
     public float angle();
+
+    public Vector returnSnapped();
+
+    public Vector returnNegated();
+
+    public Vector returnUnit();
+
+    public Vector returnNormal();
+
+    public float angle(ReadableVector otherVector);
+
+    public float dot(final ReadableVector otherVector);
+
+    public Vector add(final ReadableVector otherVector);
+
+    public Vector subtract(final ReadableVector otherVector);
+
+    public Vector pointToPointVector(final ReadableVector other);
 }

@@ -1,9 +1,11 @@
 package garjust.jag2d.geometry.polygon;
 
+import garjust.jag2d.core.Drawable;
+import garjust.jag2d.geometry.Copyable;
 import garjust.jag2d.geometry.point.Point;
 import garjust.jag2d.geometry.point.PointList;
 
-public interface ReadablePolygon {
+public interface ReadablePolygon extends Drawable, Copyable<Polygon> {
 
     public PointList vertices();
 

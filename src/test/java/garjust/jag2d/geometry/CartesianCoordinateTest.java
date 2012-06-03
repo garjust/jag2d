@@ -43,7 +43,16 @@ public class CartesianCoordinateTest {
         CartesianCoordinate expectedCoordinate = new CartesianCoordinate(15, 31);
         CartesianCoordinate coordinate = new CartesianCoordinate(15.3f, 30.5f);
 
-        assertThat(coordinate.snap(), is(expectedCoordinate));
+        assertThat(coordinate.returnSnapped(), is(expectedCoordinate));
+    }
+
+    @Test
+    public void shouldSnapCoordinates() throws Exception {
+        CartesianCoordinate expectedCoordinates = new CartesianCoordinate(3, -10);
+
+        quadrant4.snap();
+
+        assertThat(quadrant4, is(expectedCoordinates));
     }
 
     @Test

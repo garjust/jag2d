@@ -2,11 +2,11 @@ package garjust.jag2d.geometry;
 
 import garjust.jag2d.core.Drawable;
 
-public interface Geometry<G> extends Drawable {
+public interface Geometry extends Drawable {
 
-    public G rotate(final float theta);
+    public void rotate(final float theta);
 
-    public G scale(final float scalar);
+    public void scale(final float scalar);
 
-    public G translate(final float x, final float y);
+    public void translate(final float x, final float y);
 }

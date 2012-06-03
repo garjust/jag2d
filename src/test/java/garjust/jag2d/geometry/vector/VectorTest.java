@@ -57,30 +57,35 @@ public class VectorTest {
     @Test
     public void shouldChangeTheMagnitudeOfVectors() throws Exception {
         Vector expectedVector = new Vector(1, 1);
-        assertThat(quadrant1.translate(1, 1), is(expectedVector));
+        quadrant1.translate(1, 1);
+        assertThat(quadrant1, is(expectedVector));
 
         expectedVector = new Vector(1, 1);
-        assertThat(quadrant2.translate(1, 1), is(expectedVector));
+        quadrant2.translate(1, 1);
+        assertThat(quadrant2, is(expectedVector));
 
         expectedVector = new Vector(1, 1);
-        assertThat(quadrant3.translate(1, 1), is(expectedVector));
+        quadrant3.translate(1, 1);
+        assertThat(quadrant3, is(expectedVector));
 
         expectedVector = new Vector(1, 1);
-        assertThat(quadrant4.translate(1, 1), is(expectedVector));
+        quadrant4.translate(1, 1);
+        assertThat(quadrant4, is(expectedVector));
     }
 
     @Test
-    public void testSnap() throws Exception {
-        final ReadableVector expected = new Vector(4, 8);
-        final ReadableVector result = new Vector(3.9f, 8.4f).snap();
-        assertEquals(expected.x(), result.x(), 0.001);
-        assertEquals(expected.y(), result.y(), 0.001);
+    public void shouldGetACopiedSnappedVector() throws Exception {
+        Vector expectedVector = new Vector(3, -10);
+
+        Vector snappedVector = quadrant4.returnSnapped();
+
+        assertThat(snappedVector, is(expectedVector));
     }
 
     @Test
     public void shouldNegateVectors() throws Exception {
         final ReadableVector expected = new Vector(-15, 3);
-        final ReadableVector result = new Vector(15, -3).negate();
+        final ReadableVector result = new Vector(15, -3).returnNegated();
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
@@ -88,7 +93,7 @@ public class VectorTest {
     @Test
     public void testUnit() throws Exception {
         final ReadableVector expected = new Vector(1, 0);
-        final ReadableVector result = new Vector(55, 0).unit();
+        final ReadableVector result = new Vector(55, 0).returnUnit();
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
@@ -96,32 +101,32 @@ public class VectorTest {
     @Test
     public void testNormal() throws Exception {
         final ReadableVector expected = new Vector(-3, 8);
-        final ReadableVector result = new Vector(8, 3).normal();
+        final ReadableVector result = new Vector(8, 3).returnNormal();
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
     }
 
     @Test
     public void testAngle_Vector_Vector() throws Exception {
-        final float result = Vector.angle(new Vector(8, 7), new Vector(4, 4));
+        final float result = new Vector(8, 7).angle(new Vector(4, 4));
         final float expected = 3.814074835f;
         assertEquals(expected, result, 0.001);
     }
 
     @Test
     public void testDot() throws Exception {
-        final float result = Vector.dot(new Vector(8, 7), new Vector(4, 4));
+        final float result = new Vector(8, 7).dot(new Vector(4, 4));
         final float expected = 60;
         assertEquals(expected, result, 0.001);
     }
 
     @Test
     public void testAdd() throws Exception {
-        final ReadableVector result = Vector.add(new Vector(5, 4), new Vector(3, 2));
+        final ReadableVector result = new Vector(5, 4).add(new Vector(3, 2));
         final ReadableVector expected = new Vector(8, 6);
         assertEquals(expected.x(), result.x(), 0.001);
         assertEquals(expected.y(), result.y(), 0.001);
-        final ReadableVector result2 = Vector.add(new Vector(5, 4), new Vector(-3, 2));
+        final ReadableVector result2 = new Vector(5, 4).add(new Vector(-3, 2));
         final ReadableVector expected2 = new Vector(2, 6);
         assertEquals(expected2.x(), result2.x(), 0.001);
         assertEquals(expected2.y(), result2.y(), 0.001);
@@ -129,17 +134,17 @@ public class VectorTest {
 
     @Test
     public void testSubtract() throws Exception {
-        Vector vector = Vector.subtract(new Vector(5, 4), new Vector(3, 2));
+        Vector vector = new Vector(5, 4).subtract(new Vector(3, 2));
         assertEquals(2, vector.x(), 0.001);
         assertEquals(2, vector.y(), 0.001);
-        vector = Vector.subtract(new Vector(5, 4), new Vector(-3, 2));
+        vector = new Vector(5, 4).subtract(new Vector(-3, 2));
         assertEquals(8, vector.x(), 0.001);
         assertEquals(2, vector.y(), 0.001);
     }
 
     @Test
     public void testPointToPointVector_Vector_Vector() throws Exception {
-        Vector vector = Vector.pointToPointVector(new Vector(4, 5), new Vector(7, 2));
+        Vector vector = new Vector(4, 5).pointToPointVector(new Vector(7, 2));
         assertEquals(3, vector.x(), 0.001);
         assertEquals(-3, vector.y(), 0.001);
     }

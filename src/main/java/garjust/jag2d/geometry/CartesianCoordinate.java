@@ -21,30 +21,32 @@ public class CartesianCoordinate {
         return Math.round(y);
     }
 
-    public CartesianCoordinate snap() {
+    public void snap() {
+        x = snappedX();
+        y = snappedY();
+    }
+
+    public CartesianCoordinate returnSnapped() {
         return new CartesianCoordinate(snappedX(), snappedY());
     }
 
-    public CartesianCoordinate rotate(final float theta) {
+    public void rotate(final float theta) {
         final float temp_x = x;
         x = x * FloatMath.cos(theta) - y * FloatMath.sin(theta);
         y = temp_x * FloatMath.sin(theta) + y * FloatMath.cos(theta);
-        return this;
     }
 
-    public CartesianCoordinate scale(final float scalar) {
+    public void scale(final float scalar) {
         if (scalar < 0) {
             throw new RuntimeException("Cannot scale by a negative number");
         }
         x *= scalar;
         y *= scalar;
-        return this;
     }
 
-    public CartesianCoordinate translate(final float x, final float y) {
+    public void translate(final float x, final float y) {
         this.x += x;
         this.y += y;
-        return this;
     }
 
     public float[] toArray() {
