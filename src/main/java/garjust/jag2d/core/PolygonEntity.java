@@ -1,7 +1,7 @@
 package garjust.jag2d.core;
 
 import garjust.jag2d.geometry.point.Point;
-import garjust.jag2d.geometry.polygon.Polygon;
+import garjust.jag2d.geometry.shape.Polygon;
 import garjust.jag2d.geometry.vector.Vector;
 
 import java.awt.Graphics2D;

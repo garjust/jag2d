@@ -126,15 +126,15 @@ public class CartesianCoordinateTest {
     }
 
     @Test
-    public void shouldMakeADeepCopy() throws Exception {
-        CartesianCoordinate coordinate = quadrant3.copy();
+    public void shouldMakeDeepCopy() throws Exception {
+        CartesianCoordinate copyable = quadrant3.copy();
 
-        assertThat(coordinate, is(quadrant3));
-        assertTrue(coordinate != quadrant3);
+        assertThat(copyable, is(quadrant3));
+        assertTrue(copyable != quadrant3);
 
-        coordinate.x(5433);
-        coordinate.y(5434);
+        copyable.x(5433);
+        copyable.y(5434);
 
-        assertThat(coordinate, is(not(quadrant3)));
+        assertThat(copyable, is(not(quadrant3)));
     }
 }

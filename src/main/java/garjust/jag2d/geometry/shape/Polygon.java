@@ -1,4 +1,4 @@
-package garjust.jag2d.geometry.polygon;
+package garjust.jag2d.geometry.shape;
 
 import garjust.jag2d.collision.BoundingBox;
 import garjust.jag2d.collision.Collidable;
@@ -8,7 +8,6 @@ import garjust.jag2d.geometry.point.MoveablePoint;
 import garjust.jag2d.geometry.point.Point;
 import garjust.jag2d.geometry.point.PointList;
 import garjust.jag2d.geometry.point.ReadablePoint;
-import garjust.jag2d.geometry.rectangle.ReadableRectangle;
 import garjust.jag2d.util.Sort;
 
 import java.awt.Color;
@@ -29,20 +28,20 @@ public class Polygon implements Collidable, CenterableGeometry, Copyable<Polygon
     @Setter(AccessLevel.NONE)
     private Polygon hull;
 
-    public Polygon(final ReadableRectangle rectangle) {
-        this.vertices = new PointList(4);
-        vertices.add(new Point(rectangle.origin().x(), rectangle.origin().y()));
-        vertices.add(new Point(rectangle.origin().x(), rectangle.origin().y() + rectangle.h()));
-        vertices.add(new Point(rectangle.origin().x() + rectangle.w(), rectangle.origin().y()));
-        vertices.add(new Point(rectangle.origin().x() + rectangle.w(), rectangle.origin().y() + rectangle.h()));
+    public Polygon(final PointList vertices) {
+        this.vertices = vertices;
         this.center = null;
         this.hull = null;
     }
 
-    public Polygon(final PointList vertices) {
-        this.vertices = new PointList(vertices);
+    public Polygon(final Rectangle rectangle) {
+        this.vertices = new PointList(4);
+        vertices.add(rectangle.ul().copy());
+        vertices.add(new Point(rectangle.lr().x(), rectangle.ul().y()));
+        vertices.add(rectangle.lr().copy());
+        vertices.add(new Point(rectangle.ul().x(), rectangle.lr().y()));
         this.center = null;
-        this.hull = null;
+        this.hull = copy();
     }
 
     public final Point center() {
@@ -182,13 +181,25 @@ public class Polygon implements Collidable, CenterableGeometry, Copyable<Polygon
         vertices.drawConnected(graphics);
     }
 
-    /**
-     * 
-     * @return
-     */
     @Override
     public BoundingBox bound() {
-        return new BoundingBox(this);
+        final Point ul = new Point(Integer.MAX_VALUE, Integer.MIN_VALUE);
+        final Point lr = new Point(Integer.MIN_VALUE, Integer.MAX_VALUE);
+        for (final ReadablePoint vertex : vertices) {
+            if (vertex.x() < ul.x()) {
+                ul.x(vertex.x());
+            }
+            if (vertex.x() > lr.x()) {
+                lr.x(vertex.x());
+            }
+            if (vertex.y() < lr.y()) {
+                lr.y(vertex.y());
+            }
+            if (vertex.y() > ul.y()) {
+                ul.y(vertex.y());
+            }
+        }
+        return new BoundingBox(ul, lr);
     }
 
     public Polygon deform(final Point deform_origin) {

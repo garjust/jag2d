@@ -1,17 +1,18 @@
-package garjust.jag2d.geometry.circle;
+package garjust.jag2d.geometry.shape;
 
 import garjust.jag2d.collision.BoundingBox;
 import garjust.jag2d.collision.Collidable;
+import garjust.jag2d.geometry.CenterableGeometry;
+import garjust.jag2d.geometry.Copyable;
 import garjust.jag2d.geometry.point.Point;
 import garjust.jag2d.geometry.point.PointList;
 import garjust.jag2d.geometry.point.ReadablePoint;
-import garjust.jag2d.geometry.polygon.Polygon;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Accessors(fluent = true)
 @Data
-public class Circle implements Collidable, MoveableCircle, ReadableCircle {
+public class Circle implements Collidable, CenterableGeometry, Copyable<Circle> {
 
     private Point center;
     private float radius;
@@ -39,7 +40,9 @@ public class Circle implements Collidable, MoveableCircle, ReadableCircle {
 
     @Override
     public BoundingBox bound() {
-        return new BoundingBox(this);
+        final Point ul = new Point(center.x() - radius, center.y() + radius);
+        final Point lr = new Point(center.x() + radius, center.y() - radius);
+        return new BoundingBox(ul, lr);
     }
 
     @Override
@@ -67,7 +70,6 @@ public class Circle implements Collidable, MoveableCircle, ReadableCircle {
         center.translate(x, y);
     }
 
-    @Override
     public int snappedRadius() {
         return Math.round(radius);
     }

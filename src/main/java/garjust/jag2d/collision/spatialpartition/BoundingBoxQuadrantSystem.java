@@ -3,14 +3,12 @@ package garjust.jag2d.collision.spatialpartition;
 import garjust.jag2d.collision.Collidable;
 import garjust.jag2d.collision.util.CollidableList;
 import garjust.jag2d.geometry.point.Point;
-import garjust.jag2d.geometry.rectangle.RectangleList;
+import garjust.jag2d.geometry.shape.Rectangle;
 import garjust.jag2d.window.WindowDimension;
 
-/**
- *
- * @author Justin Garbutt
- */
-public class BoundingBoxQuadrantSystem implements QuadrantSystem{
+import java.util.ArrayList;
+
+public class BoundingBoxQuadrantSystem implements QuadrantSystem {
 
     private final BoundingBoxQuadrant[][] quadrants;
     private final int x_quadrants;
@@ -30,17 +28,20 @@ public class BoundingBoxQuadrantSystem implements QuadrantSystem{
             }
         }
     }
-    
+
     /**
-     * TODO remove duplicate references in returned list, objects in multiple quadrants will be referenced multiple times
+     * TODO remove duplicate references in returned list, objects in multiple
+     * quadrants will be referenced multiple times
+     * 
      * @param collidable
-     * @return 
+     * @return
      */
+    @Override
     public CollidableList find(final Collidable collidable) {
         final CollidableList matches = new CollidableList();
         for (int y = 0; y < y_quadrants; y++) {
             for (int x = 0; x < x_quadrants; x++) {
-                if(quadrants[y][x].contains(collidable)) {
+                if (quadrants[y][x].contains(collidable)) {
                     matches.addAll(quadrants[y][x].retrieve(collidable));
                 }
             }
@@ -48,18 +49,19 @@ public class BoundingBoxQuadrantSystem implements QuadrantSystem{
         return matches;
     }
 
-    public RectangleList findQuadrantRectangles(final Collidable collidable) {
-        final RectangleList list = new RectangleList();
+    public ArrayList<Rectangle> findQuadrantRectangles(final Collidable collidable) {
+        final ArrayList<Rectangle> list = new ArrayList<Rectangle>();
         for (int y = 0; y < y_quadrants; y++) {
             for (int x = 0; x < x_quadrants; x++) {
                 if (quadrants[y][x].contains(collidable)) {
-                    list.add(quadrants[y][x].bound().toRectangle());
+                    // list.add(quadrants[y][x].bound());
                 }
             }
         }
         return list;
     }
 
+    @Override
     public boolean add(final Collidable collidable) {
         entities.add(collidable);
         for (int y = 0; y < y_quadrants; y++) {
@@ -69,7 +71,8 @@ public class BoundingBoxQuadrantSystem implements QuadrantSystem{
         }
         return true;
     }
-    
+
+    @Override
     public boolean remove(final Collidable collidable) {
         for (int y = 0; y < y_quadrants; y++) {
             for (int x = 0; x < x_quadrants; x++) {
@@ -79,6 +82,7 @@ public class BoundingBoxQuadrantSystem implements QuadrantSystem{
         return true;
     }
 
+    @Override
     public void update() {
         for (int i = 0; i < entities.size(); i++) {
             for (int y = 0; y < y_quadrants; y++) {

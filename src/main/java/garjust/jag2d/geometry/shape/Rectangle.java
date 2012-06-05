@@ -1,7 +1,9 @@
-package garjust.jag2d.geometry.rectangle;
+package garjust.jag2d.geometry.shape;
 
 import garjust.jag2d.collision.BoundingBox;
 import garjust.jag2d.collision.Collidable;
+import garjust.jag2d.geometry.CenterableGeometry;
+import garjust.jag2d.geometry.Copyable;
 import garjust.jag2d.geometry.point.Point;
 import garjust.jag2d.geometry.point.ReadablePoint;
 import lombok.AllArgsConstructor;
@@ -13,12 +15,11 @@ import lombok.extern.log4j.Log4j;
 @Data
 @AllArgsConstructor
 @Log4j
-public final class Rectangle implements Collidable, ReadableRectangle, MoveableRectangle {
+public final class Rectangle implements Collidable, CenterableGeometry, Copyable<Rectangle> {
 
-    public static final Rectangle square = new Rectangle(Point.ZERO.copy(), 1, 1);
-    private final Point origin;
-    private int w;
-    private int h;
+    public static final Rectangle square = new Rectangle(new Point(0, 1), new Point(1, 0));
+    private final Point ul;
+    private final Point lr;
 
     @Override
     public void rotate(final float theta) {
@@ -32,27 +33,28 @@ public final class Rectangle implements Collidable, ReadableRectangle, MoveableR
 
     @Override
     public void scale(final float scalar) {
-        this.h *= scalar;
-        this.w *= scalar;
+        ul.scale(scalar);
+        lr.scale(scalar);
     }
 
     @Override
     public void translate(final float x, final float y) {
-        origin.translate(x, y);
+        ul.translate(x, y);
+        lr.translate(x, y);
     }
 
     @Override
     public BoundingBox bound() {
-        return new BoundingBox(this);
+        return new BoundingBox(ul, lr);
     }
 
     @Override
     public void draw(final java.awt.Graphics2D graphics) {
-        graphics.drawRect(origin.snappedX(), origin.snappedY(), w, h);
+        graphics.drawRect(ul.snappedX(), ul.snappedY(), ul.snappedX() - lr.snappedX(), ul.snappedY() - lr.snappedY());
     }
 
     @Override
     public Rectangle copy() {
-        return new Rectangle(origin.copy(), w, h);
+        return new Rectangle(ul.copy(), lr.copy());
     }
 }

@@ -3,8 +3,10 @@ package garjust.jag2d.geometry.vector;
 import static garjust.jag2d.test.CustomAssert.assertThatFloat;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import garjust.jag2d.util.FloatMath;
 
 import org.junit.Before;
@@ -80,6 +82,19 @@ public class VectorTest {
         Vector snappedVector = quadrant4.returnSnapped();
 
         assertThat(snappedVector, is(expectedVector));
+    }
+
+    @Test
+    public void shouldMakeDeepCopy() throws Exception {
+        Vector copyable = quadrant3.copy();
+
+        assertThat(copyable, is(quadrant3));
+        assertTrue(copyable != quadrant3);
+
+        copyable.x(5433);
+        copyable.y(5434);
+
+        assertThat(copyable, is(not(quadrant3)));
     }
 
     @Test
